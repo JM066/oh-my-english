@@ -2,21 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 .loader {
-    @apply border-solid border-4 border-gray-200;
-    @apply rounded-full w-8 h-8;
-    border-top-color: white;
-    animation: spin 1s linear infinite;
+  @apply tw-border-solid tw-border-4 tw-border-gray-200;
+  @apply tw-rounded-full tw-w-8 tw-h-8;
+  border-top-color: white;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
 }
 .customized-app {
-    height: calc(100vh - 20px);
+  height: calc(100vh - 20px);
 }

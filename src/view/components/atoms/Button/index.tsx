@@ -1,10 +1,9 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/jsx-props-no-spreading */
 import { useRef, type ReactNode } from 'react'
 import { useButton, type AriaButtonOptions } from 'react-aria'
 import { type PressEvent } from '@react-types/shared'
-
 import { twMerge } from '../../../utils/tailwind'
-
-const Spinner = loadable(() => import('../Spinner'))
 
 export const Theme = {
   Default:
@@ -73,13 +72,7 @@ function Button(props: Props): JSX.Element {
 
   return (
     <button ref={ref} {...buttonProps} className={classNames}>
-      {isLoading ? (
-        <span className='tw-inline-block tw-scale-75'>
-          <Spinner />
-        </span>
-      ) : (
-        children
-      )}
+      {isLoading ? <div className='loader'> </div> : children}
     </button>
   )
 }

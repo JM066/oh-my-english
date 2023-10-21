@@ -1,9 +1,8 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-
-import Loading from '@/view/components/Loading'
-import Layout from '@/view/layout/Layout'
-import Home from '@/view/pages/Home'
+import Loading from './view/components/Loading'
+import Layout from './view/layout/Layout'
+import Home from './view/pages/Home'
 import './App.css'
 
 const loading = () => <Loading />
