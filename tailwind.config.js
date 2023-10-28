@@ -11,10 +11,10 @@ export default {
     fontFamily: {},
     extend: {
       colors: {
-        bprimary: 'var(--primary-color)',
-        bsecondary: 'var(--secondary-color)',
-        btertiary: 'var(--tertiary-color)',
-        bquaternary: 'var(--quaternary-color)',
+        primary: 'var(--primary-color)',
+        secondary: 'var(--secondary-color)',
+        tertiary: 'var(--tertiary-color)',
+        quaternary: 'var(--quaternary-color)',
       },
     },
     backgroundColor: (theme) => theme('colors'),

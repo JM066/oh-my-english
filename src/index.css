@@ -20,3 +20,34 @@
 .customized-app {
   height: calc(100vh - 20px);
 }
+.primary-color {
+  color: '#48466D';
+}
+
+.secondary-color {
+  color: '#0E5F76';
+}
+
+.tertiary-color {
+  color: '#8B4367';
+}
+.quanternary-color {
+  color: '#347474';
+}
+.primary-color-60 {
+  color: '#48466D';
+  opacity: 0.6;
+}
+.secondary-color-60 {
+  color: '#0E5F76';
+  opacity: 0.6;
+}
+
+.tertiary-color-60 {
+  color: '#8B4367';
+  opacity: 0.6;
+}
+.quanternary-color {
+  color: '#347474';
+  opacity: 0.6;
+}
