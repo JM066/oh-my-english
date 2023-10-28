@@ -1,12 +1,9 @@
-import Button from '../../components/atoms/Button'
+import TestTopic from '../../components/TestTopic'
 
-function Home() {
+function Home(): JSX.Element {
   return (
     <div>
-      Hihi
-      <Button theme='Custom'>
-        <span>Hello</span>
-      </Button>
+      <TestTopic titles={['hi', 'hello', 'bye']} />
     </div>
   )
 }

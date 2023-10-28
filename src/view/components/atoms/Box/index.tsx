@@ -19,7 +19,7 @@ export const BackgroundColor = {
 } as const
 
 export const Border = {
-  Custom: '',
+  Custom: 'tw-border-none',
   Default: 'tw-border',
   Left: 'tw-border-0 tw-border-l',
   Right: 'tw-border-0 tw-border-r',
