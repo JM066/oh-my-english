@@ -1,25 +1,28 @@
-import useFetchListeningTest from '../../hooks/api/useFetchListeningTest'
-import Box from '../atoms/Box'
+import { useNavigate } from 'react-router-dom'
+import { categories } from '../../services/ListeningService'
 import Text from '../atoms/Text'
+import Button from '../atoms/Button'
+import { twMerge } from '../../utils/tailwind'
 
 interface Props {
   className?: string
 }
 function TestTopic(props: Props): JSX.Element | null {
   const { className } = props
-  const { listeningData, isLoading } = useFetchListeningTest()
-  console.log('listening', listeningData)
-  if (!listeningData) return null
-  if (isLoading) return <div>Loading</div>
+  const navigate = useNavigate()
   return (
-    <div className='tw-flex tw-flex-col tw-border-1 tw-border-gray-300 tw-border-solid'>
-      {listeningData?.map((data, idx) => {
-        const key = `${data.title}_${idx}`
-        console.log('test', data)
+    <div
+      className={twMerge(
+        'tw-flex tw-flex-col tw-border-1 tw-border-gray-300 tw-border-solid',
+        className,
+      )}
+    >
+      {categories?.map((category, idx) => {
+        const key = `${category}_${idx}`
         return (
-          <Box key={key} border={idx !== 0 ? 'Top' : 'Custom'} radius='Custom'>
-            <Text text={data.title} />
-          </Box>
+          <Button key={key} onPress={() => navigate(`/test/${category}`)}>
+            <Text text={category} />
+          </Button>
         )
       })}
     </div>
