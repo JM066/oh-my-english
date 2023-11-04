@@ -46,7 +46,7 @@ export const Decoration = {
 
 export interface Props {
   className?: string
-  text: string | number
+  text: string
   color?: keyof typeof Color
   size?: keyof typeof Size
   boldness?: keyof typeof Boldness

@@ -1,7 +1,7 @@
 export interface AppState {
-    list: string[];
+  list: string[]
 }
 
 export interface AppActions {
-    setList: (id: string) => void;
+  setList: (id: string) => void
 }
