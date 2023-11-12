@@ -34,18 +34,6 @@
     "import"
   ],
   "rules": {
-    "import/prefer-default-export": "warn",
-    "@typescript-eslint/naming-convention": [
-      "error",
-      {
-        "selector": "default",
-        "format": ["strictCamelCase", "snake_case", "PascalCase", "UPPER_CASE"],
-        "filter": {
-          "regex": "^aria-[a-z]+(?:-[a-z]+)*$",
-          "match": false
-        }
-      }
-    ],
     "no-shadow": "off",
     "camelcase": "off",
     "react/react-in-jsx-scope": "off",
