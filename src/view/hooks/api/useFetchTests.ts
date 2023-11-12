@@ -6,7 +6,7 @@ const useFetchTests = (title: string | undefined) => {
   const { data, isLoading } = useQuery(cacheKey, () => listening.fetchTests(title), {
     enabled: Boolean(title),
   })
-  return { listeningData: data, isLoading }
+  return { tests: data, isLoading }
 }
 
 export default useFetchTests

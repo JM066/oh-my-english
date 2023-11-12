@@ -39,8 +39,11 @@
       "error",
       {
         "selector": "default",
-        "format": ["camelCase", "snake_case", "PascalCase", "UPPER_CASE"],
-        "leadingUnderscore": "allow"
+        "format": ["strictCamelCase", "snake_case", "PascalCase", "UPPER_CASE"],
+        "filter": {
+          "regex": "^aria-[a-z]+(?:-[a-z]+)*$",
+          "match": false
+        }
       }
     ],
     "no-shadow": "off",
@@ -103,9 +106,6 @@
     }
   ],
   "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { twMerge } from '../../../utils/tailwind'
 
 export const Color = {
@@ -82,4 +83,4 @@ function Text(props: Props): JSX.Element {
 }
 
 Text.whyDidYouRender = true
-export default Text
+export default memo(Text)
