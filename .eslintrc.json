@@ -34,6 +34,7 @@
     "import"
   ],
   "rules": {
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-shadow": "off",
     "camelcase": "off",
     "react/react-in-jsx-scope": "off",
@@ -103,6 +104,5 @@
       "version": "detect"
     }
   },
-
   "ignorePatterns": ["vite.config.ts"]
 }

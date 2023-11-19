@@ -4,11 +4,12 @@ import { type TextDropItem } from 'react-aria'
 import { useDrop } from 'react-aria'
 
 function DropTarget() {
-  const [dropped, setDropped] = useState<string | null>(null)
+  const [dropped, setDropped] = useState<string | null>()
   const ref = useRef<HTMLDivElement>(null)
   const { dropProps, isDropTarget } = useDrop({
     ref,
     async onDrop(e) {
+      console.log(e)
       const items = await Promise.all(
         e.items
           .filter(

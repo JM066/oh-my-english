@@ -5,6 +5,7 @@ import LoadingCard from '../../components/atoms/LoadingCard'
 import ProgressBar from '../../components/atoms/ProgressBar'
 import Text from '../../components/atoms/Text'
 import Button from '../../components/atoms/Button'
+import Dropzone from '../../components/atoms/Dropzone'
 
 function Test(): JSX.Element | null {
   const { id } = useParams()
@@ -33,6 +34,7 @@ function Test(): JSX.Element | null {
           >
             <Text text='Next' />
           </Button>
+          <Dropzone />
         </>
       ) : (
         <LoadingCard />
