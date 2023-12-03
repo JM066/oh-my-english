@@ -1,41 +1,39 @@
-import { useRef, type RefObject } from 'react'
+import { useRef } from 'react'
 import {
   type SelectionMode,
-  type Collection,
-  type Node,
   type Key,
   type DraggableCollectionStartEvent,
   type DraggableCollectionMoveEvent,
   type DraggableCollectionEndEvent,
-  type DragPreviewRenderer,
+  type CollectionChildren,
 } from '@react-types/shared'
+
 import { useDraggableCollectionState, useListState } from 'react-stately'
 import { useDraggableCollection, useListBox } from 'react-aria'
+
 import Option from '../Option'
 
 type DragItem = {
   type: string
 }
 type DropOperation = 'copy' | 'link' | 'move' | 'cancel'
-interface Props {
-  collection: Collection<Node<object>>
+interface Props<T> {
+  children: CollectionChildren<T>
   selectionManager: SelectionMode
   getItems: (keys: Set<Key>) => DragItem[]
   onDragStart: (e: DraggableCollectionStartEvent) => void
   onDragMove: (e: DraggableCollectionMoveEvent) => void
   onDragEnd: (e: DraggableCollectionEndEvent) => void
-  preview: RefObject<DragPreviewRenderer>
   getAllowedDropOperations: () => DropOperation[]
 }
 
-function ListBox(props: Props) {
-  // Setup listbox as normal. See the useListBox docs for more details.
+function ListBox<T extends object>(props: Props<T>) {
   const state = useListState(props)
   const ref = useRef(null)
+
   const { listBoxProps } = useListBox(
     {
       ...props,
-      // Prevent dragging from changing selection.
       shouldSelectOnPressUp: true,
     },
     state,
@@ -52,7 +50,6 @@ function ListBox(props: Props) {
       ((keys) => {
         return [...keys].map((key) => {
           const item = state.collection.getItem(key)
-
           return {
             'text/plain': item?.textValue,
           }
@@ -70,4 +67,6 @@ function ListBox(props: Props) {
     </ul>
   )
 }
+
+ListBox.whyDidYouRender = true
 export default ListBox
