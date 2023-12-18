@@ -1,4 +1,4 @@
-import { type ReactNode, type ComponentProps } from 'react'
+import { type ReactNode } from 'react'
 import { useProgressBar, type AriaProgressBarProps } from 'react-aria'
 import { twMerge } from '../../../utils/tailwind'
 

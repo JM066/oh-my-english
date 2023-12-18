@@ -1,5 +1,5 @@
-import { useRef, type ReactNode, useEffect } from 'react'
-import { Overlay, Underlay, useModalOverlay, type AriaModalOverlayProps } from 'react-aria'
+import { useRef, type ReactNode } from 'react'
+import { Overlay, useModalOverlay, type AriaModalOverlayProps } from 'react-aria'
 import { type OverlayTriggerState } from 'react-stately'
 
 export interface Props {
