@@ -1,3 +1,5 @@
+import { getAuth, signInWithPopup } from 'firebase/auth'
+
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/messaging'
 import 'firebase/compat/auth'
@@ -6,21 +8,19 @@ import 'firebase/compat/storage'
 import 'firebase/compat/functions'
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FB_API_KEY,
-  authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FB_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FB_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FB_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FB_APP_ID,
-  measurementId: import.meta.env.VITE_FB_MEASUREMENT_ID,
+  apiKey: 'AIzaSyCI1g83s_2avoBemXd7hHJiL0OUvhptOhU',
+  authDomain: 'oh-my-english-961db.firebaseapp.com',
+  projectId: 'oh-my-english-961db',
+  storageBucket: 'oh-my-english-961db.appspot.com',
+  messagingSenderId: 266152271431,
+  appId: '1:266152271431:web:c65298b31c8ff883c49b62',
+  measurementId: 'G-1V3SRZDY2H',
 }
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
-export const auth = firebase.auth()
+export const auth = getAuth()
 export const db = firebase.firestore()
-export const messaging = firebase.messaging()
 export const storage = firebase.storage()
 export const functions = firebase.functions()
 auth.languageCode = 'en'

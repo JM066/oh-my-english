@@ -23,6 +23,7 @@
   "parserOptions": {
     "project": ["./tsconfig.json", "./tsconfig.node.json"]
   },
+  "ignorePatterns": ["dist", ".eslintrc"],
   "plugins": ["react", "@typescript-eslint", "prefer-arrow-functions", "vitest", "prettier"],
   "rules": {
     "@typescript-eslint/naming-convention": [
@@ -50,7 +51,18 @@
     "@typescript-eslint/no-var-requires": "error",
     "func-names": ["error", "as-needed"],
     "import/no-named-as-default-member": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.test.js",
+          "**/*.test.jsx",
+          "**/*.test.ts",
+          "**/*.test.tsx",
+          "**/test-utils/**"
+        ]
+      }
+    ],
     "import/no-unresolved": [2, { "ignore": ["@react-types/shared"] }],
     "import/extensions": [
       "error",

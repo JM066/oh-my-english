@@ -21,15 +21,15 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{
-          persister,
-        }}
-      >
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister,
+      }}
+    >
+      <BrowserRouter>
         <App />
-      </PersistQueryClientProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </PersistQueryClientProvider>
   </React.StrictMode>,
 )
