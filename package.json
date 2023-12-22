@@ -7,10 +7,11 @@
     "dev": "vite --mode development",
     "build-dev": "tsc && vite build --mode development",
     "build-prod": "tsc && vite build --mode production",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint . --fix 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write --cache .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@react-spectrum/utils": "^3.11.2",
@@ -31,6 +32,8 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-react": "^7.23.3",
     "@nabla/vite-plugin-eslint": "^1.5.0",
     "@react-types/shared": "^3.22.0",
     "@storybook/addon-actions": "^7.5.1",
@@ -42,11 +45,15 @@
     "@storybook/react": "^7.5.1",
     "@storybook/react-vite": "^7.5.1",
     "@tanstack/eslint-plugin-query": "^5.0.5",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.11",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "@vitest/ui": "^1.1.0",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.52.0",
@@ -63,13 +70,16 @@
     "eslint-plugin-react-refresh": "^0.4.1",
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-plugin-unicorn": "^48.0.1",
+    "eslint-plugin-vitest": "^0.3.18",
+    "jsdom": "^23.0.1",
     "postcss": "^8.4.25",
     "storybook": "^7.5.1",
     "storybook-css-modules-preset": "^1.1.1",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.2.2",
     "vite": "^4.4.0",
-    "vite-tsconfig-paths": "^4.2.1"
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^1.1.0"
   },
   "main": "postcss.config.js"
 }

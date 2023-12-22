@@ -16,27 +16,29 @@
     "plugin:react/jsx-runtime",
     "plugin:react/recommended",
     "plugin:storybook/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
+    "plugin:vitest/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": ["./tsconfig.json"]
   },
-
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "prefer-arrow-functions",
-    "prettier",
-    "import"
-  ],
+  "plugins": ["react", "@typescript-eslint", "prefer-arrow-functions", "jest", "prettier"],
   "rules": {
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": ["variable"],
+        "format": ["strictCamelCase", "PascalCase", "UPPER_CASE", "snake_case"],
+        "filter": {
+          "regex": "^_id$",
+          "match": false
+        }
+      }
+    ],
     "no-shadow": "off",
     "camelcase": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
     "@typescript-eslint/no-explicit-any": "off",
@@ -46,29 +48,31 @@
     "@typescript-eslint/no-var-requires": "error",
     "func-names": ["error", "as-needed"],
     "import/no-named-as-default-member": "off",
-    "import/extensions": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/no-unresolved": [2, { "ignore": ["@react-types/shared"] }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "no-bitwise": "off",
     "no-debugger": "warn",
-    "no-console": "off",
-    "no-multiple-empty-lines": "error",
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-use-before-define": "off",
     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     "prefer-arrow-callback": "error",
     "prettier/prettier": [
-      "error",
+      "warn",
       {
         "semi": false,
         "endOfLine": "auto"
       }
     ],
-    "react/jsx-filename-extension": [
-      "error",
-      {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    ],
-    "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "warn",
     "react/require-default-props": [
       0,
@@ -103,6 +107,5 @@
     "react": {
       "version": "detect"
     }
-  },
-  "ignorePatterns": ["vite.config.ts"]
+  }
 }
