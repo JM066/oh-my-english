@@ -8,7 +8,6 @@ import svgr from 'vite-plugin-svgr'
 import eslintPlugin from '@nabla/vite-plugin-eslint'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-// https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
     plugins: [react(), svgr(), eslintPlugin(), tsconfigPaths()],

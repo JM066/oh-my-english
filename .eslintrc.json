@@ -21,9 +21,9 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
   },
-  "plugins": ["react", "@typescript-eslint", "prefer-arrow-functions", "jest", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "prefer-arrow-functions", "vitest", "prettier"],
   "rules": {
     "@typescript-eslint/naming-convention": [
       "error",
@@ -38,6 +38,8 @@
     ],
     "no-shadow": "off",
     "camelcase": "off",
+    "no-console": "off",
+    "react/jsx-props-no-spreading": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
