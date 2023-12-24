@@ -11,16 +11,16 @@ function TestTopic(props: Props): JSX.Element | null {
   const { className } = props
   const navigate = useNavigate()
   return (
-    <div
-      className={twMerge(
-        'tw-flex tw-flex-col tw-border-1 tw-border-gray-300 tw-border-solid',
-        className,
-      )}
-    >
+    <div className={twMerge('tw-flex tw-gap-2 tw-py-2', className)}>
       {categories?.map((category, idx) => {
         const key = `${category}_${idx}`
         return (
-          <Button key={key} onPress={() => navigate(`/test/${category}`)}>
+          <Button
+            key={key}
+            theme='Inverted'
+            size='Medium'
+            onPress={() => navigate(`/test/${category}`)}
+          >
             <Text text={category} />
           </Button>
         )

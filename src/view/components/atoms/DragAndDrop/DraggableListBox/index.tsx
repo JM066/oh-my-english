@@ -2,37 +2,30 @@ import { useRef } from 'react'
 import {
   type SelectionMode,
   type Key,
-  type DraggableCollectionStartEvent,
-  type DraggableCollectionMoveEvent,
-  type DraggableCollectionEndEvent,
+  type DragItem,
   type CollectionChildren,
 } from '@react-types/shared'
 
 import { useDraggableCollectionState, useListState } from 'react-stately'
 import { useDraggableCollection, useListBox } from 'react-aria'
 
-import Option from '../Option'
+import Option from '../DragOption'
 
-type DragItem = {
-  type: string
-}
 type DropOperation = 'copy' | 'link' | 'move' | 'cancel'
 interface Props<T> {
   children: CollectionChildren<T>
   selectionManager: SelectionMode
   getItems: (keys: Set<Key>) => DragItem[]
-  onDragStart: (e: DraggableCollectionStartEvent) => void
-  onDragMove: (e: DraggableCollectionMoveEvent) => void
-  onDragEnd: (e: DraggableCollectionEndEvent) => void
   getAllowedDropOperations: () => DropOperation[]
 }
 
-function ListBox<T extends object>(props: Props<T>) {
+function DraggableListBox<T extends object>(props: Props<T>) {
   const state = useListState(props)
   const ref = useRef(null)
 
   const { listBoxProps } = useListBox(
     {
+      'aria-label': 'draggable list box',
       ...props,
       shouldSelectOnPressUp: true,
     },
@@ -44,7 +37,6 @@ function ListBox<T extends object>(props: Props<T>) {
     ...props,
     collection: state.collection,
     selectionManager: state.selectionManager,
-
     getItems:
       props?.getItems ||
       ((keys) => {
@@ -68,5 +60,5 @@ function ListBox<T extends object>(props: Props<T>) {
   )
 }
 
-ListBox.whyDidYouRender = true
-export default ListBox
+DraggableListBox.whyDidYouRender = true
+export default DraggableListBox

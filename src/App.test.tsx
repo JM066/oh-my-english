@@ -13,7 +13,6 @@ const wrapper: FC<{ children: ReactNode }> = ({ children }) => (
 )
 
 describe('<App />', () => {
-  // eslint-disable-next-line vitest/expect-expect
   test('renders', async () => {
     const user = userEvent.setup()
     render(

@@ -10,9 +10,9 @@ interface Props<T> {
   dragState: DraggableCollectionState
 }
 
-function Option<T>({ item, state, dragState }: Props<T>) {
+function DragOption<T>({ item, state, dragState }: Props<T>) {
   const ref = useRef(null)
-  const { optionProps } = useOption({ key: item.key }, state, ref)
+  const { optionProps } = useOption({ 'aria-label': 'drag option', key: item.key }, state, ref)
   const { isFocusVisible, focusProps } = useFocusRing()
 
   const { dragProps } = useDraggableItem(
@@ -32,4 +32,4 @@ function Option<T>({ item, state, dragState }: Props<T>) {
     </li>
   )
 }
-export default Option
+export default DragOption

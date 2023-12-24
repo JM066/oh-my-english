@@ -5,6 +5,7 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 import { QueryClient } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
+import './wdyr'
 import './index.css'
 
 const persister = createSyncStoragePersister({
