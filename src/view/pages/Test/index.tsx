@@ -1,11 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Item, useListData } from 'react-stately'
-import {
-  type Key,
-  type DragItem,
-  type DroppableCollectionInsertDropEvent,
-} from '@react-types/shared'
+import { type DroppableCollectionInsertDropEvent } from '@react-types/shared'
 import useFetchTests from '../../hooks/api/useFetchTests'
 import LoadingCard from '../../components/atoms/LoadingCard'
 import ProgressBar from '../../components/atoms/ProgressBar'
@@ -18,26 +14,20 @@ function Test(): JSX.Element | null {
   const { id } = useParams()
   const [current, setCurrent] = useState<number>(0)
   const { tests, isLoading } = useFetchTests(id)
+
   const list = useListData({
-    initialItems: [
-      { id: 1, name: 'Cat' },
-      { id: 2, name: 'Dog' },
-      { id: 3, name: 'Kangaroo' },
-    ],
+    initialItems: [{ id: 1, name: 'Cat' }],
   })
+  useEffect(() => {
+    console.log('kust', list)
+  }, [list])
+
   const dragItems = tests?.[current].words.concat(tests[current].distractors)
 
-  const getItems = (keys: Set<Key>) => {
-    const items: DragItem[] = []
-    keys.forEach((key) => {
-      const item: DragItem = {}
-      item[key.toString()] = key.toString()
-      items.push(item)
-    })
-    return items
-  }
+  if (!tests) return null
+
   const onInsert = async (e: DroppableCollectionInsertDropEvent) => {
-    const name = await e.items[0]?.getText('text/plain')
+    const name = await e.items[0].getText('text/plain')
     const item = { id: list.items.length + 1, name }
     if (e.target.dropPosition === 'before') {
       list.insertBefore(e.target.key, item)
@@ -46,7 +36,6 @@ function Test(): JSX.Element | null {
     }
   }
 
-  if (!tests) return null
   return (
     <div>
       {!isLoading ? (
@@ -69,15 +58,11 @@ function Test(): JSX.Element | null {
             >
               <Text text='Next' />
             </Button>
-            <DraggableListBox
-              selectionManager='single'
-              getItems={getItems}
-              getAllowedDropOperations={() => ['copy']}
-            >
+            <DraggableListBox selectionManager='single' getAllowedDropOperations={() => ['copy']}>
               {dragItems.map((item, index) => {
                 const key = `${item}_${index}`
                 return (
-                  <Item key={key} textValue={key}>
+                  <Item key={key} textValue={item}>
                     {item}
                   </Item>
                 )
@@ -88,7 +73,14 @@ function Test(): JSX.Element | null {
               acceptedDragTypes={['text/plain']}
               onInsert={onInsert}
             >
-              {(item) => <Item>{item}</Item>}
+              {list.items.map((item, index) => {
+                const key = `${item}_${index}`
+                return (
+                  <Item key={key} textValue={item.name}>
+                    {item.name}
+                  </Item>
+                )
+              })}
             </DroppableListBox>
           </>
         )
