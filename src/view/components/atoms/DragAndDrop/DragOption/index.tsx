@@ -32,4 +32,5 @@ function DragOption<T>({ item, state, dragState }: Props<T>) {
     </li>
   )
 }
+DragOption.whyDidYouRender = true
 export default DragOption

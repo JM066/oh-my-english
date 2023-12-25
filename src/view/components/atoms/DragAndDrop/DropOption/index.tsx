@@ -3,6 +3,7 @@ import { mergeProps, useDroppableItem, useFocusRing, useOption } from 'react-ari
 import { type ListState } from '@react-stately/list'
 import { type DroppableCollectionState } from '@react-stately/dnd'
 import { type Node } from '@react-types/shared'
+import DropIndicator from '../DropIndicator'
 
 interface Props<T> {
   item: Node<T>
@@ -27,15 +28,36 @@ function DropOption<T>({ item, state, dropState }: Props<T>) {
     ref,
   )
   return (
-    <li
-      {...mergeProps(optionProps, dropProps, focusProps)}
-      ref={ref}
-      className={`option ${isFocusVisible ? 'focus-visible' : ''} ${
-        isDropTarget ? 'drop-target' : ''
-      }`}
-    >
-      {item.rendered}
-    </li>
+    <>
+      <DropIndicator
+        target={{
+          type: 'item',
+          key: item.key,
+          dropPosition: 'before',
+        }}
+        dropState={dropState}
+      />
+      <li
+        {...mergeProps(optionProps, dropProps, focusProps)}
+        ref={ref}
+        className={`option ${isFocusVisible ? 'focus-visible' : ''} ${
+          isDropTarget ? 'drop-target' : ''
+        }`}
+      >
+        {item.rendered}
+      </li>
+      {state.collection.getKeyAfter(item.key) == null && (
+        <DropIndicator
+          target={{
+            type: 'item',
+            key: item.key,
+            dropPosition: 'after',
+          }}
+          dropState={dropState}
+        />
+      )}
+    </>
   )
 }
+DropOption.whyDidYouRender = true
 export default DropOption
