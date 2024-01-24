@@ -12,6 +12,7 @@ import {
   mergeProps,
   useDroppableCollection,
   useListBox,
+  type AriaListBoxProps,
 } from 'react-aria'
 import DropOption from '../DropOption'
 
@@ -19,13 +20,19 @@ interface Props<T> {
   children?: CollectionChildren<T>
   selectionManager: SelectionMode
   acceptedDragTypes: 'all' | Array<string | symbol>
+  items: {
+    id: number
+    name: string
+  }[]
   onInsert: (e: DroppableCollectionInsertDropEvent) => void
+  // options?: Omit<AriaListBoxProps<T>, 'children'>
 }
 
 function DroppableListBox<T extends object>(props: Props<T>) {
+  // const { children, options } = props
   const state = useListState(props)
   const ref = useRef(null)
-  const { listBoxProps } = useListBox(
+  const { listBoxProps } = useListBox<T>(
     {
       'aria-label': 'droppable list box',
       ...props,
@@ -39,6 +46,7 @@ function DroppableListBox<T extends object>(props: Props<T>) {
     collection: state.collection,
     selectionManager: state.selectionManager,
   })
+  const isDropTarget = dropState.isDropTarget({ type: 'root' })
 
   const { collectionProps } = useDroppableCollection(
     {
@@ -50,7 +58,11 @@ function DroppableListBox<T extends object>(props: Props<T>) {
     ref,
   )
   return (
-    <ul {...mergeProps(listBoxProps, collectionProps)} ref={ref}>
+    <ul
+      {...mergeProps(listBoxProps, collectionProps)}
+      ref={ref}
+      className={isDropTarget ? 'drop-target' : ''}
+    >
       {[...state.collection].map((item) => (
         <DropOption key={item.key} item={item} state={state} dropState={dropState} />
       ))}

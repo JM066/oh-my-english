@@ -10,6 +10,11 @@ import Button from '../../components/atoms/Button'
 import DraggableListBox from '../../components/atoms/DragAndDrop/DraggableListBox'
 import DroppableListBox from '../../components/atoms/DragAndDrop/DroppableListBox'
 
+interface ListItem {
+  id: number
+  name: string
+}
+
 function Test(): JSX.Element | null {
   const { id } = useParams()
   const [current, setCurrent] = useState<number>(0)
@@ -28,7 +33,9 @@ function Test(): JSX.Element | null {
 
   const onInsert = async (e: DroppableCollectionInsertDropEvent) => {
     const name = await e.items[0].getText('text/plain')
+    console.log('name', name)
     const item = { id: list.items.length + 1, name }
+    console.log('item', item)
     if (e.target.dropPosition === 'before') {
       list.insertBefore(e.target.key, item)
     } else if (e.target.dropPosition === 'after') {
@@ -58,7 +65,10 @@ function Test(): JSX.Element | null {
             >
               <Text text='Next' />
             </Button>
-            <DraggableListBox selectionManager='single' getAllowedDropOperations={() => ['copy']}>
+            <DraggableListBox<ListItem>
+              selectionManager='single'
+              getAllowedDropOperations={() => ['copy']}
+            >
               {dragItems.map((item, index) => {
                 const key = `${item}_${index}`
                 return (
@@ -68,19 +78,13 @@ function Test(): JSX.Element | null {
                 )
               })}
             </DraggableListBox>
-            <DroppableListBox
+            <DroppableListBox<ListItem>
               selectionManager='single'
               acceptedDragTypes={['text/plain']}
+              items={list.items}
               onInsert={onInsert}
             >
-              {list.items.map((item, index) => {
-                const key = `${item}_${index}`
-                return (
-                  <Item key={key} textValue={item.name}>
-                    {item.name}
-                  </Item>
-                )
-              })}
+              {(item) => <Item>{item.name}</Item>}
             </DroppableListBox>
           </>
         )
