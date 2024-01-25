@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { type SelectionMode, type CollectionChildren } from '@react-types/shared'
 
 import { useDraggableCollectionState, useListState } from 'react-stately'
-import { useDraggableCollection, useListBox } from 'react-aria'
+import { useDraggableCollection, useListBox, type AriaListBoxProps } from 'react-aria'
 
 import DragOption from '../DragOption'
 
@@ -11,10 +11,12 @@ interface Props<T> {
   children: CollectionChildren<T>
   selectionManager: SelectionMode
   getAllowedDropOperations: () => DropOperation[]
+  options?: Omit<AriaListBoxProps<T>, 'children'>
 }
 
 function DraggableListBox<T extends object>(props: Props<T>) {
-  const state = useListState(props)
+  const { children, options } = props
+  const state = useListState({ children, ...options })
   const ref = useRef(null)
 
   const { listBoxProps } = useListBox(
@@ -34,9 +36,8 @@ function DraggableListBox<T extends object>(props: Props<T>) {
     getItems(keys) {
       return [...keys].map((key) => {
         const item = state.collection.getItem(key)
-        console.log('item', item)
         return {
-          'text/plain': item.textValue,
+          'text/plain': item?.textValue ?? '',
         }
       })
     },

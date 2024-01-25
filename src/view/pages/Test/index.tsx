@@ -18,16 +18,20 @@ interface ListItem {
 function Test(): JSX.Element | null {
   const { id } = useParams()
   const [current, setCurrent] = useState<number>(0)
+  const [dragItems, setDragItems] = useState<string[]>()
   const { tests, isLoading } = useFetchTests(id)
 
-  const list = useListData({
-    initialItems: [{ id: 1, name: 'Cat' }],
+  const list = useListData<ListItem>({
+    initialItems: [{ id: 1, name: '' }],
   })
-  useEffect(() => {
-    console.log('kust', list)
-  }, [list])
 
-  const dragItems = tests?.[current].words.concat(tests[current].distractors)
+  useEffect(() => {
+    // Todo: Save the index it in the app store
+    if (!isLoading && tests && tests.length > current) {
+      const distractors = tests?.[current].words.concat(tests[current].distractors)
+      setDragItems(distractors)
+    }
+  }, [current, tests, isLoading])
 
   if (!tests) return null
 
@@ -44,7 +48,7 @@ function Test(): JSX.Element | null {
   }
 
   return (
-    <div>
+    <div className=''>
       {!isLoading ? (
         dragItems && (
           <>
@@ -59,12 +63,14 @@ function Test(): JSX.Element | null {
               options={{ 'aria-label': `progress bar ${id}` }}
             />
             <Text text={tests[current].answerKr} />
+
             <Button
               theme='Inverted'
               onPress={() => setCurrent((prev) => Math.min(prev + 1, tests.length - 1))}
             >
               <Text text='Next' />
             </Button>
+
             <DraggableListBox<ListItem>
               selectionManager='single'
               getAllowedDropOperations={() => ['copy']}
