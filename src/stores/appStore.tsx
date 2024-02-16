@@ -1,10 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, type EnhancedStore } from '@reduxjs/toolkit'
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import logger from 'redux-logger'
+import authSlice from '../redux/authSlice'
 
 export const configureStoreWithMiddlewares = (initialState = {}): EnhancedStore => {
   const store = configureStore({
-    reducer: {},
+    reducer: {
+      auth: authSlice,
+    },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
     preloadedState: initialState,
     devTools: process.env.NODE_ENV !== 'production',
