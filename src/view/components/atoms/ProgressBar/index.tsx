@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 import { useProgressBar, type AriaProgressBarProps } from 'react-aria'
-import { twMerge } from '../../../utils/tailwind'
+import { twMerge } from '../../../../utils/tailwind'
 
 const Height = {
   Default: 'tw-h-1',

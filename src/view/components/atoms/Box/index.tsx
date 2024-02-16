@@ -1,6 +1,6 @@
 import { memo, type CSSProperties, type ReactNode } from 'react'
 
-import { twMerge } from '../../../utils/tailwind'
+import { twMerge } from '../../../../utils/tailwind'
 
 export const Color = {
   Primary: 'tw-gray-',

@@ -3,7 +3,7 @@
 import { useRef, type ReactNode } from 'react'
 import { useButton, type AriaButtonOptions } from 'react-aria'
 import { type PressEvent } from '@react-types/shared'
-import { twMerge } from '../../../utils/tailwind'
+import { twMerge } from '../../../../utils/tailwind'
 
 export const Theme = {
   Default:

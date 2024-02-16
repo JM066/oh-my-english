@@ -1,4 +1,4 @@
-import { twMerge } from '../../../utils/tailwind'
+import { twMerge } from '../../../../utils/tailwind'
 
 export const Variant = {
   Default: 'default',

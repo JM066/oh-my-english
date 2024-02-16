@@ -1,6 +1,6 @@
 import { auth } from '../../firebase/firebase.utils'
 import { type LoggedInUser } from '../../types/User'
-import { storeItem, clearItem, getItem } from '../../view/utils/storage'
+import { storeItem, clearItem, getItem } from '../../utils/storage'
 import { LOCALSTORAGE_USER_KEY } from '../../types/LocalStorage'
 
 export const setStoredUser = (user: LoggedInUser): void => {

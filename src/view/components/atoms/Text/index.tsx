@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { twMerge } from '../../../utils/tailwind'
+import { twMerge } from '../../../../utils/tailwind'
 
 export const Color = {
   Custom: '',

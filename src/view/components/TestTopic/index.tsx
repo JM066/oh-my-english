@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { categories } from '../../services/ListeningService'
 import Text from '../atoms/Text'
 import Button from '../atoms/Button'
-import { twMerge } from '../../utils/tailwind'
+import { twMerge } from '../../../utils/tailwind'
 
 interface Props {
   className?: string
