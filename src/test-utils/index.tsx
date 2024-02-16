@@ -1,31 +1,27 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
-import { QueryClient } from '@tanstack/react-query'
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
-import { render } from '@testing-library/react'
-import { type RenderOptions, type RenderResult } from '@testing-library/react'
-import { type ReactElement, type FC, type ReactNode } from 'react'
+import { render as rtlRender, type RenderOptions, type RenderResult } from '@testing-library/react'
+import { type ReactElement, type ReactNode } from 'react'
+import { Provider } from 'react-redux'
+import { configureStoreWithMiddlewares, type RootState } from '../stores/appStore'
 
-const persister = createSyncStoragePersister({
-  storage: window.localStorage,
-})
-const queryClient = new QueryClient()
+type CustomRenderOptions = {
+  preloadedState?: RootState
+  renderOptions?: Omit<RenderOptions, 'wrapper'>
+}
 
-const wrapper: FC<{ children: ReactNode }> = ({ children }) => (
-  <PersistQueryClientProvider
-    client={queryClient}
-    persistOptions={{
-      persister,
-    }}
-  >
-    {children}
-  </PersistQueryClientProvider>
-)
+function render(
+  ui: ReactElement,
+  { preloadedState = {}, ...renderOptions }: CustomRenderOptions = {},
+): RenderResult {
+  function Wrapper({ children }: { children?: ReactNode }): ReactElement {
+    const store = configureStoreWithMiddlewares(preloadedState)
 
-const renderWithProvider = (ui: ReactElement, options: RenderOptions): RenderResult => {
-  return render(ui, { wrapper, ...options })
+    return <Provider store={store}>{children}</Provider>
+  }
+
+  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
 }
 
 export * from '@testing-library/react'
 
-export { renderWithProvider as render }
+// override render method and export history
+export { render }

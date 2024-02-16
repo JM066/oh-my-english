@@ -57,7 +57,7 @@ function DroppableListBox<T extends object>(props: Props<T>) {
     <ul
       {...mergeProps(listBoxProps, collectionProps)}
       ref={ref}
-      className='tw-w-1/2 tw-h-6 tw-bg-slate-300 tw-list-none'
+      className='tw-flex tw-gap-2 tw-h-6 tw-bg-slate-300 tw-list-none'
     >
       {[...state.collection].map((item) => (
         <DropOption key={item.key} item={item} state={state} dropState={dropState} />

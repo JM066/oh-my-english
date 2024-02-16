@@ -1,10 +1,14 @@
-import React from 'react'
+import { StrictMode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
-import { BrowserRouter } from 'react-router-dom'
-import App from './App'
+import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import Loading from './view/components/Loading'
+import Home from './view/pages/Home'
+import Test from './view/pages/Test'
+import './App.css'
+import TestLayout from './view/layout/TestLayout'
 import './wdyr'
 import './index.css'
 
@@ -21,7 +25,7 @@ const queryClient = new QueryClient({
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <StrictMode>
     <PersistQueryClientProvider
       client={queryClient}
       persistOptions={{
@@ -29,8 +33,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       }}
     >
       <BrowserRouter>
-        <App />
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/test' element={<TestLayout />}>
+              <Route path='/test/:id' element={<Test />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </PersistQueryClientProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 )

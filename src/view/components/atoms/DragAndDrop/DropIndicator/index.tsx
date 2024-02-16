@@ -2,12 +2,9 @@ import { useRef } from 'react'
 import { useDropIndicator } from 'react-aria'
 
 function DropIndicator(props: any) {
+  const { dropState } = props
   const ref = useRef(null)
-  const { dropIndicatorProps, isHidden, isDropTarget } = useDropIndicator(
-    props,
-    props.dropState,
-    ref,
-  )
+  const { dropIndicatorProps, isHidden, isDropTarget } = useDropIndicator(props, dropState, ref)
   if (isHidden) {
     return null
   }

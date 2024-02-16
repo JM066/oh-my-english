@@ -1,5 +1,5 @@
 {
-  "name": "emolive-react-web",
+  "name": "oh-my-english",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -15,9 +15,11 @@
   },
   "dependencies": {
     "@react-spectrum/utils": "^3.11.2",
+    "@reduxjs/toolkit": "^2.2.1",
     "@tanstack/query-sync-storage-persister": "^4.32.0",
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-query-persist-client": "^4.32.0",
+    "@types/redux-logger": "^3.0.13",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "firebase": "^10.0.0",
@@ -25,11 +27,12 @@
     "react-aria": "^3.29.1",
     "react-aria-components": "^1.0.0-rc.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^9.1.0",
     "react-router-dom": "^6.21.1",
     "react-stately": "^3.28.0",
+    "redux-logger": "^3.0.6",
     "tailwind-merge": "^1.14.0",
-    "vite-plugin-svgr": "^3.2.0",
-    "zustand": "^4.3.9"
+    "vite-plugin-svgr": "^3.2.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.6",
@@ -50,6 +53,7 @@
     "@types/jest": "^29.5.11",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "@types/react-redux": "^7.1.33",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "@vitejs/plugin-react": "^4.0.3",

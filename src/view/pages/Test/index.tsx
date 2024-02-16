@@ -37,9 +37,7 @@ function Test(): JSX.Element | null {
 
   const onInsert = async (e: DroppableCollectionInsertDropEvent) => {
     const name = await e.items[0].getText('text/plain')
-    console.log('name', name)
     const item = { id: list.items.length + 1, name }
-    console.log('item', item)
     if (e.target.dropPosition === 'before') {
       list.insertBefore(e.target.key, item)
     } else if (e.target.dropPosition === 'after') {
@@ -63,14 +61,12 @@ function Test(): JSX.Element | null {
               options={{ 'aria-label': `progress bar ${id}` }}
             />
             <Text text={tests[current].answerKr} />
-
             <Button
               theme='Inverted'
               onPress={() => setCurrent((prev) => Math.min(prev + 1, tests.length - 1))}
             >
               <Text text='Next' />
             </Button>
-
             <DraggableListBox<ListItem>
               selectionManager='single'
               getAllowedDropOperations={() => ['copy']}
