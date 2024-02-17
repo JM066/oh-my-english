@@ -1,4 +1,10 @@
+import Input from '../../components/atoms/Input'
+
 function Home(): JSX.Element {
-  return <div>Hello! </div>
+  return (
+    <div>
+      <Input label='Email' />
+    </div>
+  )
 }
 export default Home

@@ -9,6 +9,7 @@ export const Color = {
   Default: 'tw-text-black',
   White: 'tw-text-white',
   Blue: 'tw-text-blue-700',
+  Red: 'tw-text-red-500',
 } as const
 
 export const Size = {

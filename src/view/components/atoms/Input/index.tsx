@@ -1,37 +1,36 @@
 import { useRef, memo } from 'react'
-import type { AriaTextFieldProps } from 'react-aria'
-import { useTextField } from 'react-aria'
+import type { AriaTextFieldOptions } from 'react-aria'
+import { useTextField, useLabel } from 'react-aria'
+import { type RegisterOptions, useFormContext } from 'react-hook-form'
 
-function Input(props: AriaTextFieldProps) {
-  const { label, description } = props
+import Text from '../Text'
+
+export interface Props extends AriaTextFieldOptions<'input'> {
+  className?: string
+  label?: string
+  error?: string
+  formOptions?: RegisterOptions
+}
+function TextFieldInput(props: Props) {
+  const { label = '', error = '' } = props
   const ref = useRef(null)
-  const {
-    labelProps,
-    inputProps,
-    descriptionProps,
-    errorMessageProps,
-    isInvalid,
-    validationErrors,
-  } = useTextField(props, ref)
-
+  const { inputProps, errorMessageProps, validationErrors } = useTextField(props, ref)
+  const { labelProps } = useLabel({ 'aria-label': `label ${label}`, label })
+  const register = useFormContext()
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: 200 }}>
-      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-      <label {...labelProps}>{label}</label>
-      <input {...inputProps} ref={ref} />
-      {description && (
-        <div {...descriptionProps} style={{ fontSize: 12 }}>
-          {description}
-        </div>
-      )}
-      {isInvalid && (
-        <div {...errorMessageProps} style={{ color: 'red', fontSize: 10 }}>
-          {validationErrors.join(' ')}
-        </div>
-      )}
+    <div className='tw-flex tw-flex-col'>
+      <Text size='Small' {...labelProps} color='Gray800' as='label' text={label} />
+      <input {...inputProps} {...register} ref={ref} />
+      <Text
+        size='Small'
+        {...errorMessageProps}
+        color='Red'
+        as='span'
+        text={error || validationErrors.join(' ')}
+      />
     </div>
   )
 }
 
-Input.whyDidYouRender = true
-export default memo(Input)
+TextFieldInput.whyDidYouRender = true
+export default memo(TextFieldInput)
