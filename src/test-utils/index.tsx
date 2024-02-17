@@ -1,27 +1,34 @@
-import { render as rtlRender, type RenderOptions, type RenderResult } from '@testing-library/react'
+/* eslint-disable import/no-extraneous-dependencies */
 import { type ReactElement, type ReactNode } from 'react'
+import { render, type RenderOptions, type RenderResult } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { configureStoreWithMiddlewares, type RootState } from '../stores/appStore'
 
 type CustomRenderOptions = {
   preloadedState?: RootState
+  route?: string
   renderOptions?: Omit<RenderOptions, 'wrapper'>
 }
 
-function render(
+function renderWithRouterAndStore(
   ui: ReactElement,
-  { preloadedState = {}, ...renderOptions }: CustomRenderOptions = {},
+  { preloadedState = {}, route = '/', ...renderOptions }: CustomRenderOptions = {},
 ): RenderResult {
+  window.history.pushState({}, 'Initial Page', route)
   function Wrapper({ children }: { children?: ReactNode }): ReactElement {
     const store = configureStoreWithMiddlewares(preloadedState)
 
-    return <Provider store={store}>{children}</Provider>
+    return (
+      <Provider store={store}>
+        <MemoryRouter>{children}</MemoryRouter>
+      </Provider>
+    )
   }
 
-  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
+  return render(ui, { wrapper: Wrapper, ...renderOptions })
 }
 
 export * from '@testing-library/react'
 
-// override render method and export history
-export { render }
+export { renderWithRouterAndStore as render }
