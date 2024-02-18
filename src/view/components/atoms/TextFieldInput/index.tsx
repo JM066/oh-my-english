@@ -12,15 +12,18 @@ export interface Props extends AriaTextFieldOptions<'input'> {
   formOptions?: RegisterOptions
 }
 function TextFieldInput(props: Props) {
-  const { label = '', error = '' } = props
+  const { label = '', error = '', placeholder = 'placeholder...' } = props
   const ref = useRef(null)
   const { inputProps, errorMessageProps, validationErrors } = useTextField(props, ref)
   const { labelProps } = useLabel({ 'aria-label': `label ${label}`, label })
-  const register = useFormContext()
+
+  const formContext = useFormContext()
+
   return (
     <div className='tw-flex tw-flex-col'>
       <Text size='Small' {...labelProps} color='Gray800' as='label' text={label} />
-      <input {...inputProps} {...register} ref={ref} />
+      <input {...inputProps} ref={ref} />
+      {/* {...(formContext?.register(label, formOptions) */}
       <Text
         size='Small'
         {...errorMessageProps}
