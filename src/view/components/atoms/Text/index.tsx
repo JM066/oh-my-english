@@ -48,12 +48,13 @@ export const Decoration = {
 
 export interface Props {
   className?: string
-  text: string
+  text?: string
   color?: keyof typeof Color
   size?: keyof typeof Size
   boldness?: keyof typeof Boldness
   transform?: keyof typeof Transform
   decoration?: keyof typeof Decoration
+  attributes?: React.HTMLAttributes<HTMLElement>
   as?: React.ElementType
 }
 
@@ -66,6 +67,7 @@ function Text(props: Props): JSX.Element {
     boldness = 'Normal',
     transform = 'Normal',
     decoration = 'Default',
+    attributes,
     as,
   } = props
 
@@ -80,7 +82,11 @@ function Text(props: Props): JSX.Element {
 
   const Component = as || 'span'
 
-  return <Component className={classNames}>{text}</Component>
+  return (
+    <Component className={classNames} {...attributes}>
+      {text}
+    </Component>
+  )
 }
 
 Text.whyDidYouRender = true
