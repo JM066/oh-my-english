@@ -1,14 +1,15 @@
 import { memo } from 'react'
 
-import { type Control, Controller, type FieldValues } from 'react-hook-form'
+import { type Control, Controller, type FieldValues, type Path } from 'react-hook-form'
 import { Input, Label, TextField, FieldError } from 'react-aria-components'
 import Text from '../../atoms/Text'
 
-export interface Props {
-  control: Control<FieldValues>
-  label: string
+export interface Props<T> {
+  control: Control<FieldValues, T>
+  label: Path<T>
 }
-function TextInput({ control, label }: Props) {
+
+function TextInput<T>({ control, label }: Props<T>) {
   return (
     <Controller
       control={control}

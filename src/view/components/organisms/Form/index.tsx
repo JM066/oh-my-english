@@ -1,21 +1,24 @@
-import { useForm, type FieldValues } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Button } from 'react-aria-components'
 import TextInput from '../../molecules/TextInput'
+import authService from '../../../../services/auth'
+import { type Login } from '../../../types/User'
 
 function Form() {
-  const { handleSubmit, control } = useForm<FieldValues>({
+  const { handleSubmit, control } = useForm<Login>({
     defaultValues: {
-      name: '',
       email: '',
+      password: '',
     },
   })
-  const onSubmit = (data: FieldValues) => {
-    console.log('data', data)
+  const onSubmit = async (data: Login) => {
+    const { email, password } = data
+    const login = await authService.userLogin()
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput control={control} label='name' />
       <TextInput control={control} label='email' />
+      <TextInput control={control} label='password' />
       <Button type='submit'>Submit</Button>
     </form>
   )
