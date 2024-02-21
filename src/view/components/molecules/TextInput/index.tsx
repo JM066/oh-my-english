@@ -1,9 +1,9 @@
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 
 import { type UseControllerProps, useController } from 'react-hook-form'
 import { Input, Label, TextField, FieldError } from 'react-aria-components'
 import Text from '../../atoms/Text'
-import { type Login } from '../../../types/User'
+import { type Login } from '../../../../types/Auth'
 
 export interface Props {
   name: string
@@ -12,11 +12,12 @@ export interface Props {
 
 function TextInput<T extends Login>(props: Props & UseControllerProps<T>): JSX.Element {
   // Todo: Need to fix the generic type
-  const { name, control, label } = props
+  const { name, control, label, rules } = props
   const {
     field: { ref, value, onChange, onBlur },
     fieldState: { invalid, error },
-  } = useController<T>({ name, control })
+  } = useController<T>({ name, control, rules: { ...rules, required: true } })
+  console.log('errors', error)
 
   return (
     <TextField
@@ -33,7 +34,11 @@ function TextInput<T extends Login>(props: Props & UseControllerProps<T>): JSX.E
       </Label>
       <Input ref={ref} />
       <FieldError>
-        <Text text={error?.message} color='Red' />
+        <Text
+          size='Small'
+          text={error?.type === 'required' ? '* is Required' : error?.message}
+          color='Red'
+        />
       </FieldError>
     </TextField>
   )

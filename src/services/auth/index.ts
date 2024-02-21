@@ -1,9 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { FirebaseError } from '@firebase/util'
+// import { type UserCredential } from 'firebase/auth'
 import { auth } from '../../firebase/firebase.utils'
-import { type LoggedInUser } from '../../types/User'
+import { type User, type AuthLogin } from '../../types/Auth'
 import { storeItem, clearItem, getItem } from '../../utils/storage'
 import { LOCALSTORAGE_USER_KEY } from '../../types/LocalStorage'
 
-export const setStoredUser = (user: LoggedInUser): void => {
+export const setStoredUser = (user: AuthLogin): void => {
   storeItem(LOCALSTORAGE_USER_KEY.User, JSON.stringify(user))
 }
 
@@ -11,7 +14,7 @@ export const clearStoredUser = (): void => {
   clearItem(LOCALSTORAGE_USER_KEY.User)
 }
 
-export const getStoredUser = (): LoggedInUser | null => {
+export const getStoredUser = (): AuthLogin | null => {
   const storedUser = getItem(LOCALSTORAGE_USER_KEY.User)
   return storedUser ? JSON.parse(storedUser) : null
 }
@@ -22,21 +25,43 @@ const authService = {
     try {
       const userCredential = await auth.createUserWithEmailAndPassword(email, password)
       user = userCredential.user
-    } catch (error) {
-      console.log(error)
+      return user
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code
+        // const errorMessage = error.message
+        console.log('errorcode', errorCode)
+        if (errorCode === 'auth/invalid-credential') {
+          console.log('wrong password')
+        }
+      }
     }
-
     return user
   },
-  userLogin: async (email: string, password: string) => {
-    let user
+  userLogin: async (params: User): Promise<AuthLogin> => {
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(email, password)
-      user = userCredential.user
-    } catch (error) {
-      console.log(error)
+      const { email, password } = params
+      let userInfo: AuthLogin
+      const { user } = await auth.signInWithEmailAndPassword(email, password)
+      if (user?.email && user?.providerId) {
+        userInfo = {
+          userId: user.providerId,
+          email: user.email,
+          displayName: user.displayName || '',
+        }
+      } else {
+        throw new Error('incomplete user info')
+      }
+      return userInfo
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        // const errorCode = error.code
+        const errorMessage = error.message
+        throw new Error(errorMessage)
+      } else {
+        throw new Error('An unexpected error')
+      }
     }
-    return user
   },
   getUserStatus: async () => {
     auth.onAuthStateChanged((user) => {

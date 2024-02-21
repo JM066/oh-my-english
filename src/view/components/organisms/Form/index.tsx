@@ -1,19 +1,26 @@
 import { useForm } from 'react-hook-form'
 import { Button } from 'react-aria-components'
 import TextInput from '../../molecules/TextInput'
-// import authService from '../../../../services/auth'
-import { type Login } from '../../../types/User'
+import { useAppDispatch } from '../../../../stores/appStore'
+import { userLogin } from '../../../../redux/authSlice'
+import { type User } from '../../../../types/Auth'
 
 function Form() {
-  const { handleSubmit, control } = useForm<Login>({
+  const appDispatch = useAppDispatch()
+  const { handleSubmit, control } = useForm<User>({
     defaultValues: {
       email: '',
       password: '',
     },
   })
-  const onSubmit = async (data: Login) => {
-    // const { email, password } = data
-    // const login = await authService.userLogin()
+  const onSubmit = (data: User) => {
+    try {
+      const { email, password } = data
+      appDispatch(userLogin({ email, password }))
+      // Todo : Fix this
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,55 +1,55 @@
 /* eslint-disable no-param-reassign */
-import { createAction, createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { type RootState } from '../stores/appStore'
-import { clearStoredUser, getStoredUser, setStoredUser } from '../services/auth'
-import { type LoggedInUser, type User, type SignInDetails, type SignInStatus } from '../types/User'
-
-export type AuthState = {
-  userDetails?: LoggedInUser
-  signInStatus: SignInStatus
-}
+import { createSlice, createAsyncThunk, type ActionReducerMapBuilder } from '@reduxjs/toolkit'
+import toast from 'react-hot-toast'
+import authService, { getStoredUser } from '../services/auth'
+import { type AuthLogin, type User, type AuthState } from '../types/Auth'
 
 const getInitialState = (): AuthState => {
   const initialState: AuthState = {
-    signInStatus: 'idle',
+    status: 'idle',
+    isLoggedIn: false,
   }
-  const storedUser = getStoredUser()
-  if (storedUser) initialState.userDetails = storedUser
+  const storedUser: AuthLogin | null = getStoredUser()
+  if (storedUser) {
+    initialState.data = storedUser
+    initialState.isLoggedIn = true
+  }
   return initialState
+}
+export const userLogin = createAsyncThunk<AuthLogin, User>('auth/userLogin', authService.userLogin)
+// export const cancelLogin = createAction('auth/cancelSignIn')
+
+const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
+  builder.addCase(userLogin.pending, (state) => {
+    state.status = 'pending'
+  })
+  builder.addCase(userLogin.fulfilled, (state, action) => {
+    state.status = 'idle'
+    state.data = action.payload
+    state.isLoggedIn = true
+    delete state.error
+  })
+  builder.addCase(userLogin.rejected, (state, action) => {
+    state.status = 'idle'
+    if (action.error.message) toast.error(action.error.message, { duration: 2000 })
+    state.isLoggedIn = false
+  })
 }
 
 const createAuthSlice = (initialState: AuthState) =>
   createSlice({
-    name: 'user',
+    name: 'auth',
     initialState,
-    reducers: {
-      signIn: (state, action: PayloadAction<LoggedInUser>) => {
-        state.signInStatus = 'idle'
-        state.userDetails = action.payload
-        setStoredUser(action.payload)
-      },
-      signOut: (state) => {
-        state.userDetails = undefined
-        clearStoredUser()
-      },
-      startSignIn: (state) => {
-        state.signInStatus = 'pending'
-      },
-      endSignIn: (state) => {
-        state.signInStatus = 'idle'
-      },
+    reducers: {},
+    extraReducers: (builder) => {
+      userLoginBuilder(builder)
+      // userLogoutBuilder(builder)
+      // userSignUpBuilder(builder)
     },
   })
-
-export const signInRequest = createAction<SignInDetails>('signInRequest')
-export const cancelSignIn = createAction('cancelSignIn')
-
-export const selectors = {
-  getUserDetails: (state: RootState): User | null => state.user.userDetails,
-}
 
 const initialState = getInitialState()
 const authSlice = createAuthSlice(initialState)
 
-export const { signIn, signOut, startSignIn, endSignIn } = authSlice.actions
+// export const { updateProfile } = authSlice.actions
 export default authSlice.reducer
