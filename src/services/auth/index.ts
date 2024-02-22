@@ -55,11 +55,10 @@ const authService = {
       return userInfo
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
-        // const errorCode = error.code
         const errorMessage = error.message
         throw new Error(errorMessage)
       } else {
-        throw new Error('An unexpected error')
+        throw new Error('unknown error type')
       }
     }
   },

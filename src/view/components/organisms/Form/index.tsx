@@ -1,6 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { Button } from 'react-aria-components'
+import toast from 'react-hot-toast'
+import { FirebaseError } from '@firebase/util'
 import TextInput from '../../molecules/TextInput'
+
 import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin } from '../../../../redux/authSlice'
 import { type User } from '../../../../types/Auth'
@@ -16,10 +19,16 @@ function Form() {
   const onSubmit = (data: User) => {
     try {
       const { email, password } = data
-      appDispatch(userLogin({ email, password }))
-      // Todo : Fix this
-    } catch (error) {
-      console.log(error)
+      appDispatch(userLogin({ email, password })).then((action) => {
+        if (action.meta.requestStatus === 'fulfilled') {
+          toast.success('toast.reset.password.success', { duration: 1000 })
+        }
+      })
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        console.log(error)
+        // Todo : Error handling & Navigation
+      }
     }
   }
   return (
