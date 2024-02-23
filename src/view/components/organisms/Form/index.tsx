@@ -27,7 +27,7 @@ function Form() {
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
         console.log(error)
-        // Todo : Error handling & Navigation
+        // Todo : ErrorBoundary for async
       }
     }
   }

@@ -58,7 +58,7 @@ const authService = {
         const errorMessage = error.message
         throw new Error(errorMessage)
       } else {
-        throw new Error('unknown error type')
+        throw new Error('errorMessage')
       }
     }
   },
