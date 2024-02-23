@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { FirebaseError } from '@firebase/util'
-// import { type UserCredential } from 'firebase/auth'
 import { auth } from '../../firebase/firebase.utils'
 import { type User, type AuthLogin } from '../../types/Auth'
 import { storeItem, clearItem, getItem } from '../../utils/storage'
@@ -19,57 +18,52 @@ export const getStoredUser = (): AuthLogin | null => {
   return storedUser ? JSON.parse(storedUser) : null
 }
 
-const authService = {
-  createUser: async (email: string, password: string) => {
-    let user
-    try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password)
-      user = userCredential.user
-      return user
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        const errorCode = error.code
-        // const errorMessage = error.message
-        console.log('errorcode', errorCode)
-        if (errorCode === 'auth/invalid-credential') {
-          console.log('wrong password')
-        }
-      }
+export const doUserLogin = async (params: User): Promise<AuthLogin> => {
+  try {
+    const { email, password } = params
+    const { user } = await auth.signInWithEmailAndPassword(email, password)
+    if (!user?.email || !user?.providerId) {
+      throw new Error('Missing user information')
     }
-    return user
-  },
-  userLogin: async (params: User): Promise<AuthLogin> => {
-    try {
-      const { email, password } = params
-      let userInfo: AuthLogin
-      const { user } = await auth.signInWithEmailAndPassword(email, password)
-      if (user?.email && user?.providerId) {
-        userInfo = {
-          userId: user.providerId,
-          email: user.email,
-          displayName: user.displayName || '',
-        }
-      } else {
-        throw new Error('incomplete user info')
-      }
-      return userInfo
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        const errorMessage = error.message
-        throw new Error(errorMessage)
-      } else {
-        throw new Error('errorMessage')
-      }
+    const userInfo: AuthLogin = {
+      userId: user.providerId,
+      email: user.email,
+      displayName: user.displayName || '',
     }
-  },
-  getUserStatus: async () => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        return user.uid
-      }
-      return 'User is signed out'
-    })
-  },
+    return userInfo
+  } catch (error: unknown) {
+    const err = error as FirebaseError
+    // if (error instanceof FirebaseError) {
+    //   const errorMessage = error.message
+    //   throw new Error(errorMessage)
+    // }
+    throw new Error(err.message)
+  }
 }
 
-export default authService
+export const doCreateUser = async (email: string, password: string) => {
+  let user
+  try {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password)
+    user = userCredential.user
+    return user
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      const errorCode = error.code
+      console.log('errorcode', errorCode)
+      if (errorCode === 'auth/invalid-credential') {
+        console.log('wrong password')
+      }
+    }
+  }
+  return user
+}
+
+export const getUserStatus = async () => {
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      return user.uid
+    }
+    return 'User is signed out'
+  })
+}
