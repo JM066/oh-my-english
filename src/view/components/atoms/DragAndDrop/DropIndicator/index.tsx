@@ -13,6 +13,7 @@ function DropIndicator(props: any) {
     <li
       {...dropIndicatorProps}
       role='option'
+      aria-selected
       ref={ref}
       className={`drop-indicator ${isDropTarget ? 'drop-target' : ''}`}
     />

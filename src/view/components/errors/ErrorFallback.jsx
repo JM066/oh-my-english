@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 function ErrorFallback({ error }) {
   const { resetBoundary } = useErrorBoundary()
-
   return (
     <div>
       <h2 className='fs-4'>Something went wrong.</h2>

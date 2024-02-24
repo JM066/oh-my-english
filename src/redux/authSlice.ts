@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk, type ActionReducerMapBuilder } from '@reduxjs/toolkit'
-import { getStoredUser, doUserLogin } from '../services/auth'
-import { type AuthLogin, type User, type AuthState } from '../types/Auth'
+import { getStoredUser, doUserLogin, doCreateUser } from '../services/auth'
+import { type AuthLogin, type LoginInfo, type AuthState, type SignUpInfo } from '../types/Auth'
 
 const getInitialState = (): AuthState => {
   const initialState: AuthState = {
@@ -15,8 +15,9 @@ const getInitialState = (): AuthState => {
   }
   return initialState
 }
-export const userLogin = createAsyncThunk<AuthLogin, User>('auth/userLogin', doUserLogin)
+export const userLogin = createAsyncThunk<AuthLogin, LoginInfo>('auth/userLogin', doUserLogin)
 // export const cancelLogin = createAction('auth/cancelSignIn')
+export const userSignUp = createAsyncThunk<AuthLogin, SignUpInfo>('auth/userSignUp', doCreateUser)
 
 const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogin.pending, (state) => {
@@ -34,6 +35,22 @@ const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
     state.error = action.error.message
   })
 }
+const userSignUpBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
+  // builder.addCase(userSignUp.pending, (state) => {
+  //   state.status = 'pending'
+  // })
+  // builder.addCase(userSignUp.fulfilled, (state, action) => {
+  //   state.status = 'idle'
+  //   state.data = action.payload
+  //   state.isLoggedIn = true
+  //   delete state.error
+  // })
+  // builder.addCase(userSignUp.rejected, (state, action) => {
+  //   state.status = 'idle'
+  //   state.isLoggedIn = false
+  //   state.error = action.error.message
+  // })
+}
 
 const createAuthSlice = (initialState: AuthState) =>
   createSlice({
@@ -43,7 +60,7 @@ const createAuthSlice = (initialState: AuthState) =>
     extraReducers: (builder) => {
       userLoginBuilder(builder)
       // userLogoutBuilder(builder)
-      // userSignUpBuilder(builder)
+      userSignUpBuilder(builder)
     },
   })
 

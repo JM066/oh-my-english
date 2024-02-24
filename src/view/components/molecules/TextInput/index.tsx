@@ -1,18 +1,19 @@
-import { memo } from 'react'
+import { type HTMLInputTypeAttribute, memo } from 'react'
 
 import { type UseControllerProps, useController } from 'react-hook-form'
 import { Input, Label, TextField, FieldError } from 'react-aria-components'
 import Text from '../../atoms/Text'
-import { type User } from '../../../../types/Auth'
+import { type SignUpInfo, type LoginInfo } from '../../../../types/Auth'
 
 export interface Props {
   name: string
   label: string
+  type?: HTMLInputTypeAttribute
 }
 
-function TextInput<T extends User>(props: Props & UseControllerProps<T>): JSX.Element {
+function TextInput<T extends SignUpInfo>(props: Props & UseControllerProps<T>): JSX.Element {
   // Todo: Need to fix the generic type
-  const { name, control, label, rules } = props
+  const { name, control, label, rules, type } = props
   const {
     field: { ref, value, onChange, onBlur },
     fieldState: { invalid, error },
@@ -31,7 +32,7 @@ function TextInput<T extends User>(props: Props & UseControllerProps<T>): JSX.El
       <Label>
         <Text text={label} color='Gray800' />
       </Label>
-      <Input ref={ref} />
+      <Input type={type} ref={ref} />
       <FieldError>
         <Text
           size='Small'

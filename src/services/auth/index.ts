@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { FirebaseError } from '@firebase/util'
 import { auth } from '../../firebase/firebase.utils'
-import { type User, type AuthLogin } from '../../types/Auth'
+import { type LoginInfo, type AuthLogin, SignUpInfo } from '../../types/Auth'
 import { storeItem, clearItem, getItem } from '../../utils/storage'
 import { LOCALSTORAGE_USER_KEY } from '../../types/LocalStorage'
 
@@ -18,7 +18,7 @@ export const getStoredUser = (): AuthLogin | null => {
   return storedUser ? JSON.parse(storedUser) : null
 }
 
-export const doUserLogin = async (params: User): Promise<AuthLogin> => {
+export const doUserLogin = async (params: LoginInfo): Promise<AuthLogin> => {
   try {
     const { email, password } = params
     const { user } = await auth.signInWithEmailAndPassword(email, password)
@@ -33,19 +33,18 @@ export const doUserLogin = async (params: User): Promise<AuthLogin> => {
     return userInfo
   } catch (error: unknown) {
     const err = error as FirebaseError
-    // if (error instanceof FirebaseError) {
-    //   const errorMessage = error.message
-    //   throw new Error(errorMessage)
-    // }
     throw new Error(err.message)
   }
 }
 
-export const doCreateUser = async (email: string, password: string) => {
+export const doCreateUser = async (params: SignUpInfo) => {
+  const { email, password, name } = params
+  console.log('Name', name, email, password)
   let user
   try {
     const userCredential = await auth.createUserWithEmailAndPassword(email, password)
     user = userCredential.user
+    console.log('USER', userCredential)
     return user
   } catch (error: unknown) {
     if (error instanceof FirebaseError) {
