@@ -15,7 +15,7 @@ function SignUp() {
   const { handleSubmit, control } = useForm<LoginInfo>({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
+      displayName: '',
       email: '',
       password: '',
       passwordConfirmation: '',
@@ -37,7 +37,7 @@ function SignUp() {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput type='name' name='name' label='name' control={control} />
+      <TextInput type='name' name='displayName' label='name' control={control} />
       <TextInput type='email' name='email' label='email' control={control} />
       <TextInput type='password' name='password' label='password' control={control} />
       <TextInput

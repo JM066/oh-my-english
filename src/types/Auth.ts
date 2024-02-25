@@ -1,3 +1,5 @@
+import { type Timestamp } from 'firebase/firestore'
+
 export interface UserName {
   name: string
 }
@@ -13,4 +15,7 @@ export type AuthLogin = {
   userId: string
   email: string
   displayName?: string
+  level: number
+  token: string
+  created_at: Timestamp
 }

@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { FirebaseError } from '@firebase/util'
-import { type User, Timestamp, serverTimestamp, DocumentData } from 'firebase/firestore'
+
+import { type FirebaseError } from 'firebase/app'
+import { type User } from 'firebase/auth'
+import { serverTimestamp, type DocumentData } from 'firebase/firestore'
 import { auth, db } from '../../firebase/firebase.utils'
 import { type AuthLogin } from '../../types/Auth'
 import { storeItem, clearItem, getItem } from '../../utils/storage'
@@ -20,59 +22,59 @@ export const getStoredUser = (): AuthLogin | null => {
   return storedUser ? JSON.parse(storedUser) : null
 }
 
-const getToken = async (user: firebase.User | null) => {
+// const getToken = async (user: User | null) => {
+//   try {
+//     const token = await user?.getIdToken()
+//     return token
+//   } catch (error: unknown) {
+//     const err = error as Error
+//     throw new Error(err.message)
+//   }
+// }
+export const getUserStatus = async (userId: string) => {
+  const userRef = db.collection('Users').doc(userId)
   try {
-    const token = await user?.getIdToken()
-    return token
-  } catch (err) {
-    throw new Error(err)
+    const userData = await userRef.get()
+    if (!userData.exists) {
+      throw new Error('Missing user information')
+    }
+    const userInfo = {
+      userId: userData.id,
+      ...userData.data(),
+    }
+    return userInfo
+  } catch (error: unknown) {
+    const err = error as Error
+    throw new Error(err.message)
   }
 }
 
-export const doUserLogin = async (params: LoginInfo): Promise<AuthLogin> => {
+export const doUserLogin = async (params: LoginInfo): Promise<void> => {
   try {
     const { email, password } = params
     const { user } = await auth.signInWithEmailAndPassword(email, password)
     if (!user?.email || !user?.providerId) {
       throw new Error('Missing user information')
     }
-    const userInfo: AuthLogin = {
-      userId: user.providerId,
-      email: user.email,
-      displayName: user.displayName || '',
-    }
-    return userInfo
   } catch (error: unknown) {
-    const err = error as FirebaseError
+    const err = error as Error
     throw new Error(err.message)
   }
 }
 
-export const doCreateUser = async (params: LoginInfo): Promise<any> => {
+export const doCreateUser = async (params: LoginInfo): Promise<void> => {
   try {
-    const { email, password, name } = params
+    const { email, password, displayName } = params
     const { user } = await auth.createUserWithEmailAndPassword(email, password)
-    console.log('USER', user?.uid, user?.getIdToken(), user?.getIdTokenResult())
-    const userRef = db.collection('Users').doc('uid')
-
+    const userRef = db.collection('Users').doc(user?.uid)
     await userRef.set({
       email: user?.email,
       created_at: serverTimestamp(),
-      displayName: name || '',
+      displayName: displayName || '',
       level: 0,
-      token: await getToken(user),
     })
   } catch (error: unknown) {
     const err = error as FirebaseError
     throw new Error(err.message)
   }
-}
-
-export const getUserStatus = async () => {
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      return user.uid
-    }
-    return 'User is signed out'
-  })
 }

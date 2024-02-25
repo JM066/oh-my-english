@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk, type ActionReducerMapBuilder } from '@reduxjs/toolkit'
-import { getStoredUser, doUserLogin, doCreateUser } from '../services/auth'
+import { getStoredUser, doUserLogin, doCreateUser, doUserLogout } from '../services/auth'
 import { type AuthLogin, type AuthState } from '../types/Auth'
 import { type LoginInfo } from '../view/components/organisms/Login'
 
@@ -17,21 +17,37 @@ const getInitialState = (): AuthState => {
   }
   return initialState
 }
-export const userLogin = createAsyncThunk<AuthLogin, LoginInfo>('auth/userLogin', doUserLogin)
+export const userLogin = createAsyncThunk<void, LoginInfo>('auth/userLogin', doUserLogin)
+export const userLogout = createAsyncThunk('auth/userLogout', doUserLogout)
 // export const cancelLogin = createAction('auth/cancelSignIn')
-export const userSignUp = createAsyncThunk<any, LoginInfo>('auth/userSignUp', doCreateUser)
+export const userSignUp = createAsyncThunk<void, LoginInfo>('auth/userSignUp', doCreateUser)
 
 const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogin.pending, (state) => {
     state.status = 'pending'
   })
-  builder.addCase(userLogin.fulfilled, (state, action) => {
+  builder.addCase(userLogin.fulfilled, (state) => {
+    state.status = 'idle'
+    state.isLoggedIn = true
+    delete state.error
+  })
+  builder.addCase(userLogin.rejected, (state, action) => {
+    state.status = 'idle'
+    state.isLoggedIn = false
+    state.error = action.error.message
+  })
+}
+const userLogoutBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
+  builder.addCase(userLogout.pending, (state) => {
+    state.status = 'pending'
+  })
+  builder.addCase(userLogout.fulfilled, (state, action) => {
     state.status = 'idle'
     state.data = action.payload
     state.isLoggedIn = true
     delete state.error
   })
-  builder.addCase(userLogin.rejected, (state, action) => {
+  builder.addCase(userLogout.rejected, (state, action) => {
     state.status = 'idle'
     state.isLoggedIn = false
     state.error = action.error.message
@@ -43,7 +59,6 @@ const userSignUpBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   })
   builder.addCase(userSignUp.fulfilled, (state) => {
     state.status = 'idle'
-    // state.data = action.payload
     state.isRegistered = true
     delete state.error
   })
@@ -61,7 +76,7 @@ const createAuthSlice = (initialState: AuthState) =>
     reducers: {},
     extraReducers: (builder) => {
       userLoginBuilder(builder)
-      // userLogoutBuilder(builder)
+      userLogoutBuilder(builder)
       userSignUpBuilder(builder)
     },
   })

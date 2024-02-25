@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin } from '../../../../redux/authSlice'
 
 export const schema = yup.object({
-  name: yup.string(),
+  displayName: yup.string(),
   email: yup.string().email().required('Email address required'),
   password: yup
     .string()

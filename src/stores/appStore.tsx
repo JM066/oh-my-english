@@ -8,7 +8,8 @@ export const configureStoreWithMiddlewares = () => {
     reducer: {
       auth: authSlice,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({ serializableCheck: false }).concat(logger),
     devTools: process.env.NODE_ENV !== 'production',
   })
 

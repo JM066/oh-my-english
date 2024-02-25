@@ -14,6 +14,15 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
+export function onAuthStateChange() {
+  return firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log('The user is logged in')
+    } else {
+      console.log('The user is not logged in')
+    }
+  })
+}
 export const auth = firebase.auth()
 export const db = firebase.firestore()
 export const fieldValue = firebase.firestore.FieldValue
