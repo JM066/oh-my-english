@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk, type ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import { getStoredUser, doUserLogin, doCreateUser } from '../services/auth'
-import { type AuthLogin, type LoginInfo, type AuthState, type SignUpInfo } from '../types/Auth'
+import { type AuthLogin, type AuthState } from '../types/Auth'
+import { type LoginInfo } from '../view/components/organisms/Login'
 
 const getInitialState = (): AuthState => {
   const initialState: AuthState = {
     status: 'idle',
     isLoggedIn: false,
+    isRegistered: false,
   }
   const storedUser: AuthLogin | null = getStoredUser()
   if (storedUser) {
@@ -17,7 +19,7 @@ const getInitialState = (): AuthState => {
 }
 export const userLogin = createAsyncThunk<AuthLogin, LoginInfo>('auth/userLogin', doUserLogin)
 // export const cancelLogin = createAction('auth/cancelSignIn')
-export const userSignUp = createAsyncThunk<AuthLogin, SignUpInfo>('auth/userSignUp', doCreateUser)
+export const userSignUp = createAsyncThunk<any, LoginInfo>('auth/userSignUp', doCreateUser)
 
 const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogin.pending, (state) => {
@@ -36,20 +38,20 @@ const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   })
 }
 const userSignUpBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
-  // builder.addCase(userSignUp.pending, (state) => {
-  //   state.status = 'pending'
-  // })
-  // builder.addCase(userSignUp.fulfilled, (state, action) => {
-  //   state.status = 'idle'
-  //   state.data = action.payload
-  //   state.isLoggedIn = true
-  //   delete state.error
-  // })
-  // builder.addCase(userSignUp.rejected, (state, action) => {
-  //   state.status = 'idle'
-  //   state.isLoggedIn = false
-  //   state.error = action.error.message
-  // })
+  builder.addCase(userSignUp.pending, (state) => {
+    state.status = 'pending'
+  })
+  builder.addCase(userSignUp.fulfilled, (state) => {
+    state.status = 'idle'
+    // state.data = action.payload
+    state.isRegistered = true
+    delete state.error
+  })
+  builder.addCase(userSignUp.rejected, (state, action) => {
+    state.status = 'idle'
+    state.isRegistered = false
+    state.error = action.error.message
+  })
 }
 
 const createAuthSlice = (initialState: AuthState) =>

@@ -2,27 +2,29 @@
 import { useForm } from 'react-hook-form'
 import { Button } from 'react-aria-components'
 import toast from 'react-hot-toast'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useErrorBoundary } from 'react-error-boundary'
 import TextInput from '../../molecules/TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
-import { type SignUpInfo } from '../../../../types/Auth'
 import { userSignUp } from '../../../../redux/authSlice'
+import { schema, type LoginInfo } from '../Login'
 
 function SignUp() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
-
-  const { handleSubmit, control } = useForm<SignUpInfo>({
+  const { handleSubmit, control } = useForm<LoginInfo>({
+    resolver: yupResolver(schema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
-      name: '',
+      passwordConfirmation: '',
     },
   })
-  const onSubmit = async (data: SignUpInfo) => {
+  const onSubmit = async (data: LoginInfo) => {
     try {
-      const { email, password, name } = data
-      appDispatch(userSignUp({ email, password, name })).then((action) => {
+      const { email, password } = data
+      appDispatch(userSignUp({ email, password })).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
           toast.success('toast.reset.password.success', { duration: 1000 })
         } else {
@@ -35,9 +37,15 @@ function SignUp() {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <TextInput type='name' name='name' label='name' control={control} />
       <TextInput type='email' name='email' label='email' control={control} />
       <TextInput type='password' name='password' label='password' control={control} />
-      <TextInput type='name' name='name' label='name' control={control} />
+      <TextInput
+        type='password'
+        name='passwordConfirmation'
+        label='confirm password'
+        control={control}
+      />
       <Button type='submit'>Submit</Button>
     </form>
   )

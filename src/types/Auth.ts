@@ -1,7 +1,3 @@
-export interface LoginInfo {
-  email: string
-  password: string
-}
 export interface UserName {
   name: string
 }
@@ -10,8 +6,8 @@ export interface AuthState {
   error?: string | null
   data?: AuthLogin
   isLoggedIn: boolean
+  isRegistered: boolean
 }
-export type SignUpInfo = LoginInfo & UserName
 
 export type AuthLogin = {
   userId: string
