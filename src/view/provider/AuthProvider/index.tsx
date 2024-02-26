@@ -1,17 +1,27 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
 import { auth } from '../../../firebase/firebase.utils'
-import { useAppDispatch } from '../../../stores/appStore'
+import { useAppDispatch, useAppSelector } from '../../../stores/appStore'
+import { userLogout, userStatusUpdate } from '../../../redux/authSlice'
 
 const AuthProvider = ({ children }: React.PropsWithChildren) => {
-  //   const appDispatch = useAppDispatch()
+  const { data } = useAppSelector((state) => state).auth
+  const appDispatch = useAppDispatch()
 
-  // TOdo: move to auth file and call it as callback
   function onAuthStateChange() {
     return auth.onAuthStateChanged((user) => {
       if (user) {
-        // Todo: getUSer and update the store
+        appDispatch(userStatusUpdate(user.uid)).then((action) => {
+          if (action.meta.requestId === data?.userId) {
+            toast('Logged Updated!', { duration: 1000 })
+          }
+        })
       } else {
-        // Todo: update the store
+        appDispatch(userLogout()).then((action) => {
+          if (action.meta.requestStatus === 'fulfilled') {
+            toast('Logged out!', { duration: 1000 })
+          }
+        })
       }
     })
   }

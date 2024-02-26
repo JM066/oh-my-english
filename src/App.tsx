@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from 'react'
+import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
@@ -8,7 +8,7 @@ import Home from './view/pages/Home'
 import Test from './view/pages/Test'
 import './App.css'
 import TestLayout from './view/layout/TestLayout'
-import { onAuthStateChange } from './firebase/firebase.utils'
+import AuthProvider from './view/provider/AuthProvider'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -32,12 +32,14 @@ function App() {
       }}
     >
       <Suspense fallback={loading()}>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/test' element={<TestLayout />}>
-            <Route path='/test/:id' element={<Test />} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/test' element={<TestLayout />}>
+              <Route path='/test/:id' element={<Test />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </Suspense>
     </PersistQueryClientProvider>
   )

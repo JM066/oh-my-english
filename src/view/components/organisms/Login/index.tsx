@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useErrorBoundary } from 'react-error-boundary'
 import TextInput from '../../molecules/TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
-import { userLogin } from '../../../../redux/authSlice'
+import { userLogin, userLogout } from '../../../../redux/authSlice'
 
 export const schema = yup.object({
   displayName: yup.string(),
@@ -27,7 +27,6 @@ function Login() {
 
   const { handleSubmit, control } = useForm<LoginInfo>({
     resolver: yupResolver(schema),
-
     defaultValues: {
       email: '',
       password: '',
@@ -38,7 +37,7 @@ function Login() {
       const { email, password } = data
       appDispatch(userLogin({ email, password })).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          toast.success('toast.reset.password.success', { duration: 1000 })
+          toast('Logged In!', { duration: 1000 })
         } else {
           showBoundary(action)
         }
@@ -47,11 +46,27 @@ function Login() {
       showBoundary(error)
     }
   }
+  const onLogout = async () => {
+    try {
+      appDispatch(userLogout()).then((action) => {
+        if (action.meta.requestStatus === 'fulfilled') {
+          console.log('Logout successful!!')
+          toast.success('success!', { duration: 1000 })
+        }
+      })
+    } catch (error: unknown) {
+      showBoundary(error)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextInput name='email' label='email' control={control} />
       <TextInput name='password' label='password' control={control} />
       <Button type='submit'>Submit</Button>
+      <Button onPress={onLogout} type='button'>
+        Logout
+      </Button>
     </form>
   )
 }

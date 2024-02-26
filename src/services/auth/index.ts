@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import { type FirebaseError } from 'firebase/app'
-import { type User } from 'firebase/auth'
 import { serverTimestamp, type DocumentData } from 'firebase/firestore'
 import { auth, db } from '../../firebase/firebase.utils'
 import { type AuthLogin } from '../../types/Auth'
@@ -22,16 +21,7 @@ export const getStoredUser = (): AuthLogin | null => {
   return storedUser ? JSON.parse(storedUser) : null
 }
 
-// const getToken = async (user: User | null) => {
-//   try {
-//     const token = await user?.getIdToken()
-//     return token
-//   } catch (error: unknown) {
-//     const err = error as Error
-//     throw new Error(err.message)
-//   }
-// }
-export const getUserStatus = async (userId: string) => {
+export const getUserStatusUpdate = async (userId: string): Promise<DocumentData> => {
   const userRef = db.collection('Users').doc(userId)
   try {
     const userData = await userRef.get()
@@ -44,11 +34,19 @@ export const getUserStatus = async (userId: string) => {
     }
     return userInfo
   } catch (error: unknown) {
-    const err = error as Error
-    throw new Error(err.message)
+    const err = error as FirebaseError
+    throw new Error(err.code)
   }
 }
-
+export const doUserLogout = async () => {
+  try {
+    const dd = auth.signOut()
+    console.log(dd)
+  } catch (error: unknown) {
+    const err = error as FirebaseError
+    throw new Error(err.code)
+  }
+}
 export const doUserLogin = async (params: LoginInfo): Promise<void> => {
   try {
     const { email, password } = params
@@ -57,8 +55,8 @@ export const doUserLogin = async (params: LoginInfo): Promise<void> => {
       throw new Error('Missing user information')
     }
   } catch (error: unknown) {
-    const err = error as Error
-    throw new Error(err.message)
+    const err = error as FirebaseError
+    throw new Error(err.code)
   }
 }
 
