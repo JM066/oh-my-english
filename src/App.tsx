@@ -9,6 +9,7 @@ import Test from './view/pages/Test'
 import './App.css'
 import TestLayout from './view/layout/TestLayout'
 import AuthProvider from './view/provider/AuthProvider'
+import { Toaster } from 'react-hot-toast'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -31,6 +32,12 @@ function App() {
         persister,
       }}
     >
+      <Toaster
+        position='top-right'
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       <Suspense fallback={loading()}>
         <AuthProvider>
           <Routes>
