@@ -1,6 +1,4 @@
 import { useAppSelector } from '../../../stores/appStore'
-import Login from '../../components/organisms/Login'
-import SignUp from '../../components/organisms/SignUp'
 
 function Home(): JSX.Element {
   const { auth } = useAppSelector((state) => state)
@@ -10,13 +8,6 @@ function Home(): JSX.Element {
   }
 
   // Todo : Refctore Login & SignUp and styling
-  return (
-    <div>
-      <h2>Login</h2>
-      <Login />
-      <h2>SignUp</h2>
-      <SignUp />
-    </div>
-  )
+  return <div>Home</div>
 }
 export default Home
