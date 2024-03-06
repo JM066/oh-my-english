@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../../firebase/firebase.utils'
 import { useAppDispatch, useAppSelector } from '../../../stores/appStore'
 import { userLogout, userStatusUpdate } from '../../../redux/authSlice'
@@ -9,7 +10,7 @@ const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const appDispatch = useAppDispatch()
 
   function onAuthStateChange() {
-    return auth.onAuthStateChanged((user) => {
+    return onAuthStateChanged(auth, (user) => {
       if (user) {
         appDispatch(userStatusUpdate(user.uid)).then((action) => {
           if (action.meta.requestId === data?.userId) {

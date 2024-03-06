@@ -2,6 +2,8 @@
 
 import { type FirebaseError } from 'firebase/app'
 import { serverTimestamp, type DocumentData } from 'firebase/firestore'
+import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../../firebase/firebase.utils'
 import { type AuthLogin } from '../../types/Auth'
 import { storeItem, clearItem, getItem } from '../../utils/storage'
@@ -22,15 +24,15 @@ export const getStoredUser = (): AuthLogin | null => {
 }
 
 export const getUserStatusUpdate = async (userId: string): Promise<DocumentData> => {
-  const userRef = db.collection('Users').doc(userId)
+  const userRef = doc(db, 'Users', userId)
   try {
-    const userData = await userRef.get()
-    if (!userData.exists) {
+    const userSnap = await getDoc(userRef)
+    if (!userSnap.exists()) {
       throw new Error('Missing user information')
     }
     const userInfo = {
-      userId: userData.id,
-      ...userData.data(),
+      userId: userSnap.id,
+      ...userSnap.data(),
     }
     return userInfo
   } catch (error: unknown) {
@@ -40,8 +42,8 @@ export const getUserStatusUpdate = async (userId: string): Promise<DocumentData>
 }
 export const doUserLogout = async () => {
   try {
-    const dd = auth.signOut()
-    console.log(dd)
+    const user = signOut(auth)
+    console.log(user)
   } catch (error: unknown) {
     const err = error as FirebaseError
     throw new Error(err.code)
@@ -50,7 +52,7 @@ export const doUserLogout = async () => {
 export const doUserLogin = async (params: LoginInfo): Promise<void> => {
   try {
     const { email, password } = params
-    const { user } = await auth.signInWithEmailAndPassword(email, password)
+    const { user } = await signInWithEmailAndPassword(auth, email, password)
     if (!user?.email || !user?.providerId) {
       throw new Error('Missing user information')
     }
@@ -63,9 +65,9 @@ export const doUserLogin = async (params: LoginInfo): Promise<void> => {
 export const doCreateUser = async (params: LoginInfo): Promise<void> => {
   try {
     const { email, password, displayName } = params
-    const { user } = await auth.createUserWithEmailAndPassword(email, password)
-    const userRef = db.collection('Users').doc(user?.uid)
-    await userRef.set({
+    const { user } = await createUserWithEmailAndPassword(auth, email, password)
+    const userRef = doc(db, 'Users', user?.uid)
+    await setDoc(userRef, {
       email: user?.email,
       created_at: serverTimestamp(),
       displayName: displayName || '',

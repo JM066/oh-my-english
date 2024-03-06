@@ -1,16 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
 import Home from './index'
-import { render } from '../../../test-utils'
+import { render, screen } from '../../../test-utils'
 
 describe('<Home />', () => {
-  test('renders', async () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Home />
-      </MemoryRouter>,
-    )
+  test('renders', () => {
+    render(<Home />)
     expect(screen.getByText('Home')).toBeInTheDocument()
   })
 })

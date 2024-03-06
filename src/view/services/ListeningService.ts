@@ -1,5 +1,5 @@
 import { db } from '../../firebase/firebase.utils'
-import { type Category, type Listening } from '../types/Listening'
+import { type Category, type Listening } from '../../types/Listening'
 
 export const categories: Category[] = ['food', 'job']
 
