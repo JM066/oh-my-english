@@ -63,7 +63,7 @@ function Login() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextInput type='email' name='email' label='email' control={control} />
       <TextInput type='password' name='password' label='password' control={control} />
-      <Button type='submit'>Submit</Button>
+      <Button type='submit'>Login</Button>
       <Button onPress={onLogout} type='button'>
         Logout
       </Button>

@@ -1,16 +1,16 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
+import { Toaster } from 'react-hot-toast'
 import Loading from './view/components/loading/Loading'
 import Home from './view/pages/Home'
 import Test from './view/pages/Test'
 import './App.css'
 import TestLayout from './view/layout/TestLayout'
 import AuthProvider from './view/provider/AuthProvider'
-import { Toaster } from 'react-hot-toast'
-import Layout from './view/components/Header'
 import Header from './view/components/Header'
 import SignIn from './view/pages/SignIn'
 
@@ -53,6 +53,7 @@ function App() {
           </Routes>
         </AuthProvider>
       </Suspense>
+      <ReactQueryDevtools />
     </PersistQueryClientProvider>
   )
 }
