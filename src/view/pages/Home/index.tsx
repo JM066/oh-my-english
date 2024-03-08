@@ -1,7 +1,7 @@
 import { useAppSelector } from '../../../stores/appStore'
 
 function Home(): JSX.Element {
-  const { auth } = useAppSelector((state) => state)
+  const auth = useAppSelector((state) => state.auth)
 
   if (auth.isLoggedIn) {
     return <div>{auth.data?.displayName || auth.data?.email}</div>

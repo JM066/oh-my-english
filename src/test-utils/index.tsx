@@ -4,7 +4,9 @@ import { render, type RenderOptions, type RenderResult } from '@testing-library/
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ErrorBoundary } from 'react-error-boundary'
 import store from '../stores/appStore'
+import ErrorFallback from '../view/components/errors/ErrorFallback'
 
 type CustomRenderOptions = {
   route?: string
@@ -19,6 +21,7 @@ const queryClient = new QueryClient({
     },
   },
 })
+
 function renderWithProviders(
   ui: ReactElement,
   { route = '/', ...renderOptions }: CustomRenderOptions = {},
@@ -26,11 +29,13 @@ function renderWithProviders(
   window.history.pushState({}, 'Initial Page', route)
   function Wrapper({ children }: { children?: ReactNode }): ReactElement {
     return (
-      <QueryClientProvider client={queryClient}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
         <Provider store={store}>
-          <MemoryRouter>{children}</MemoryRouter>
+          <QueryClientProvider client={queryClient}>
+            <MemoryRouter>{children}</MemoryRouter>
+          </QueryClientProvider>
         </Provider>
-      </QueryClientProvider>
+      </ErrorBoundary>
     )
   }
 

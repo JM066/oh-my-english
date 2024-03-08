@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { categories } from '../../services/ListeningService'
+import { categories } from '../../../services/listening'
 import Text from '../atoms/Text'
 import Button from '../atoms/Button'
 import { twMerge } from '../../../utils/tailwind'
