@@ -1,15 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { type ReactElement, type ReactNode } from 'react'
-import { render, type RenderOptions, type RenderResult } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { render, type RenderOptions } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
-import store from '../stores/appStore'
+import { configureStoreWithMiddlewares, type RootState } from '../stores/appStore'
 import ErrorFallback from '../view/components/errors/ErrorFallback'
 
 type CustomRenderOptions = {
-  route?: string
+  preloadedState?: Partial<RootState>
   renderOptions?: Omit<RenderOptions, 'wrapper'>
 }
 
@@ -24,22 +24,22 @@ const queryClient = new QueryClient({
 
 function renderWithProviders(
   ui: ReactElement,
-  { route = '/', ...renderOptions }: CustomRenderOptions = {},
-): RenderResult {
-  window.history.pushState({}, 'Initial Page', route)
+  { preloadedState = {}, ...renderOptions }: CustomRenderOptions = {},
+) {
   function Wrapper({ children }: { children?: ReactNode }): ReactElement {
+    const store = configureStoreWithMiddlewares(preloadedState)
+
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <MemoryRouter>{children}</MemoryRouter>
-          </QueryClientProvider>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <BrowserRouter>{children}</BrowserRouter>
+          </Provider>
+        </QueryClientProvider>
       </ErrorBoundary>
     )
   }
-
-  return render(ui, { wrapper: Wrapper, ...renderOptions })
+  return { ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
 
 export * from '@testing-library/react'
