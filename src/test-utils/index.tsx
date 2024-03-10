@@ -32,9 +32,7 @@ function renderWithProviders(
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store}>
-            <BrowserRouter>{children}</BrowserRouter>
-          </Provider>
+          <Provider store={store}>{children}</Provider>
         </QueryClientProvider>
       </ErrorBoundary>
     )
