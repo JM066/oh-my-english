@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import userEvent from '@testing-library/user-event'
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { MemoryRouter } from 'react-router-dom'
+
+import { doUserLogin } from '../../../../services/auth'
 import { render, screen, waitFor } from '../../../../test-utils'
 import Login from './index'
 
@@ -10,54 +9,27 @@ const testUser = {
   password: 'password12345',
 }
 
-jest.mock('firebase/auth', () => ({
-  getAuth: jest.fn(),
-  signInWithEmailAndPassword: jest.fn(() => Promise.resolve('mockedSignInResponse')),
+jest.mock('../../../../services/auth', () => ({
+  doUserLogin: jest.fn(() => Promise.resolve()),
+  getStoredUser: jest.fn(() => null),
 }))
-// const authMock = jest.mocked(getAuth())
-// const signInWithEmailAndPasswordMock = jest.mocked(
-//   signInWithEmailAndPassword(authMock, testUser.email, testUser.password),
-// )
 
 describe('<Login />', () => {
   afterAll(() => {
     jest.resetAllMocks()
   })
-  // test('renders', async () => {
-  //   render(<Login />)
-  //   const emailInput = screen.getByRole('textbox', { name: /email/i })
-  //   const passwordInput = screen.getByLabelText('password')
-  //   expect(emailInput).toBeInTheDocument()
-  //   expect(emailInput).toHaveValue('')
-  //   expect(passwordInput).toBeInTheDocument()
-  //   expect(passwordInput).toHaveValue('')
-  // })
 
-  test('submit', async () => {
+  test('view user email on the screen when log in is successful', async () => {
     const route = '/login'
-    const user = userEvent.setup()
-    render(
-      <MemoryRouter initialEntries={[route]}>
-        <Login />
-      </MemoryRouter>,
-    )
+    const { user } = render(<Login />, { route })
     const emailInput = screen.getByRole('textbox', { name: /email/i })
-    // const passwordInput = screen.getByLabelText('password')
-    // const loginButton = screen.getByRole('button', { name: /login/i })
+    const passwordInput = screen.getByLabelText('password')
+    const loginButton = screen.getByRole('button', { name: /login/i })
 
     await user.type(emailInput, testUser.email)
-
-    expect(emailInput).toHaveValue(testUser.email)
-
-    //   const authMock = getAuth()
-    //   await signInWithEmailAndPassword(authMock, testUser.email, testUser.password)
-    //   await waitFor(() => {
-    //     expect(getAuth).toHaveBeenCalled()
-    //     expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
-    //       authMock,
-    //       testUser.email,
-    //       testUser.password,
-    //     )
-    //   })
+    await user.type(passwordInput, testUser.password)
+    await user.click(loginButton)
+    expect(doUserLogin).toHaveBeenCalled()
+    // View User Name on the screen
   })
 })

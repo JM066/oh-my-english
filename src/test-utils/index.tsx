@@ -5,11 +5,13 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
+import userEvent from '@testing-library/user-event'
 import { configureStoreWithMiddlewares, type RootState } from '../stores/appStore'
 import ErrorFallback from '../view/components/errors/ErrorFallback'
 
 type CustomRenderOptions = {
   preloadedState?: Partial<RootState>
+  route?: string
   renderOptions?: Omit<RenderOptions, 'wrapper'>
 }
 
@@ -24,20 +26,23 @@ const queryClient = new QueryClient({
 
 function renderWithProviders(
   ui: ReactElement,
-  { preloadedState = {}, ...renderOptions }: CustomRenderOptions = {},
+  { preloadedState = {}, route = '/', ...renderOptions }: CustomRenderOptions = {},
 ) {
   function Wrapper({ children }: { children?: ReactNode }): ReactElement {
     const store = configureStoreWithMiddlewares(preloadedState)
+    window.history.pushState({}, 'Home', route)
 
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store}>{children}</Provider>
+          <Provider store={store}>
+            <BrowserRouter>{children}</BrowserRouter>
+          </Provider>
         </QueryClientProvider>
       </ErrorBoundary>
     )
   }
-  return { ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
+  return { user: userEvent.setup(), ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
 
 export * from '@testing-library/react'
