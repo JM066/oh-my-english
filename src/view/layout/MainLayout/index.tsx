@@ -1,13 +1,19 @@
-import { Outlet } from 'react-router-dom'
+import { type ReactNode } from 'react'
 import useBreakPoint from '../../hooks/useBreakPoint'
-import Header from '../../components/Header'
+import NavBar from '../../components/NavBar'
+import { twMerge } from '../../../utils/tailwind'
 
-function MainLayout({ children }) {
+function MainLayout(props: { children: ReactNode }): JSX.Element {
+  const { children } = props
   const { isMobileView } = useBreakPoint()
+  const className = twMerge(
+    isMobileView ? 'tw-w-full' : 'tw-w-1/2',
+    'tw-h-full tw-items-center tw-p-4',
+  )
   return (
-    <div className='tw-w-full tw-h-full'>
-      <Header />
-      {children}
+    <div className='tw-flex tw-flex-col tw-items-center'>
+      <NavBar />
+      <div className={className}>{children}</div>
     </div>
   )
 }

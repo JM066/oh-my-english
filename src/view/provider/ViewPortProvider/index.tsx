@@ -8,7 +8,7 @@ export const ViewPortContext = createContext<WindowDimensions>({
   width: typeof window !== 'undefined' ? window?.innerWidth : 1920,
   height: typeof window !== 'undefined' ? window?.innerHeight : 1080,
 })
-export function ViewportProvider({ children }: { children: ReactNode }): JSX.Element {
+function ViewportProvider({ children }: { children: ReactNode }): JSX.Element {
   const [windowSize, setWindowSize] = useState<WindowDimensions>({
     width: typeof window !== 'undefined' ? window?.innerWidth : 1920,
     height: typeof window !== 'undefined' ? window?.innerHeight : 1080,

@@ -5,14 +5,15 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
+import TestLayout from './view/layout/TestLayout'
+import ViewportProvider from './view/provider/ViewPortProvider'
+import AuthProvider from './view/provider/AuthProvider'
 import Loading from './view/components/loading/Loading'
 import Home from './view/pages/Home'
 import Test from './view/pages/Test'
-import './App.css'
-import TestLayout from './view/layout/TestLayout'
-import AuthProvider from './view/provider/AuthProvider'
-import Header from './view/components/Header'
 import SignIn from './view/pages/SignIn'
+import MainLayout from './view/layout/MainLayout'
+import './App.css'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -37,20 +38,23 @@ function App() {
     >
       <Suspense fallback={loading()}>
         <AuthProvider>
-          <Toaster
-            position='top-right'
-            toastOptions={{
-              duration: 3000,
-            }}
-          />
-          {/* <Header /> */}
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/login' element={<SignIn />} />
-            <Route path='/test' element={<TestLayout />}>
-              <Route path='/test/:id' element={<Test />} />
-            </Route>
-          </Routes>
+          <ViewportProvider>
+            <MainLayout>
+              <Toaster
+                position='top-right'
+                toastOptions={{
+                  duration: 3000,
+                }}
+              />
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/login' element={<SignIn />} />
+                <Route path='/test' element={<TestLayout />}>
+                  <Route path='/test/:id' element={<Test />} />
+                </Route>
+              </Routes>
+            </MainLayout>
+          </ViewportProvider>
         </AuthProvider>
       </Suspense>
       <ReactQueryDevtools />

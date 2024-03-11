@@ -68,12 +68,12 @@ function Button(props: Props): JSX.Element {
   const { buttonProps } = useButton({ ...options, onPress, type, isDisabled }, ref)
 
   const classNames: string = twMerge(
+    className,
     Theme[theme],
     Shape[shape],
     Size[size],
     isDisabled ? '' : 'tw-cursor-pointer',
     'tw-p-0 tw-flex tw-flex-col tw-items-center tw-justify-center',
-    className,
   )
 
   return (

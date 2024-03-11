@@ -10,15 +10,16 @@
     transform: rotate(360deg);
   }
 }
+* {
+  margin: 0;
+  padding: 0;
+}
 .loader {
   @apply tw-border-solid tw-border-4 tw-border-gray-200;
   @apply tw-rounded-full tw-w-8 tw-h-8;
   border-top-color: white;
   border-top-color: white;
   animation: spin 1s linear infinite;
-}
-.customized-app {
-  height: calc(100vh - 20px);
 }
 .primary-color {
   color: '#48466D';
