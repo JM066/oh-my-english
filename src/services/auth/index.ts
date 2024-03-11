@@ -25,6 +25,7 @@ export const getStoredUser = (): AuthLogin | null => {
 
 export const getUserStatusUpdate = async (userId: string): Promise<DocumentData> => {
   const userRef = doc(db, 'Users', userId)
+
   try {
     const userSnap = await getDoc(userRef)
     if (!userSnap.exists()) {
@@ -34,6 +35,7 @@ export const getUserStatusUpdate = async (userId: string): Promise<DocumentData>
       userId: userSnap.id,
       ...userSnap.data(),
     }
+    console.log('userInfo', userInfo)
     return userInfo
   } catch (error: unknown) {
     const err = error as FirebaseError
@@ -67,12 +69,16 @@ export const doCreateUser = async (params: LoginInfo): Promise<void> => {
     const { email, password, displayName } = params
     const { user } = await createUserWithEmailAndPassword(auth, email, password)
     const userRef = doc(db, 'Users', user?.uid)
-    await setDoc(userRef, {
-      email: user?.email,
-      created_at: serverTimestamp(),
-      displayName: displayName || '',
-      level: 0,
-    })
+    await setDoc(
+      userRef,
+      {
+        email: user?.email,
+        created_at: serverTimestamp(),
+        displayName: displayName || '',
+        level: 0,
+      },
+      { merge: true },
+    )
   } catch (error: unknown) {
     const err = error as FirebaseError
     throw new Error(err.message)

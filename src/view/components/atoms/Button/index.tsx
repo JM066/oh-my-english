@@ -35,7 +35,6 @@ export const Size = {
   Large: 'tw-h-12 tw-w-64',
   Expand: 'tw-h-10 tw-w-full',
   Full: 'tw-w-full tw-h-full',
-  Default: 'tw-w-auto tw-h-auto',
 } as const
 
 export interface Props {
@@ -58,7 +57,7 @@ function Button(props: Props): JSX.Element {
     className,
     theme = 'Default',
     shape = 'Default',
-    size = 'Default',
+    size = 'Custom',
     type = 'button',
     isLoading = false,
     isDisabled = false,
@@ -68,7 +67,14 @@ function Button(props: Props): JSX.Element {
   const ref = useRef(null)
   const { buttonProps } = useButton({ ...options, onPress, type, isDisabled }, ref)
 
-  const classNames: string = twMerge(Theme[theme], Shape[shape], Size[size], 'tw-p-0', className)
+  const classNames: string = twMerge(
+    Theme[theme],
+    Shape[shape],
+    Size[size],
+    isDisabled ? '' : 'tw-cursor-pointer',
+    'tw-p-0 tw-flex tw-flex-col tw-items-center tw-justify-center',
+    className,
+  )
 
   return (
     <button ref={ref} {...buttonProps} className={classNames}>

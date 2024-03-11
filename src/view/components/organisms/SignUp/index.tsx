@@ -23,8 +23,8 @@ function SignUp() {
   })
   const onSubmit = async (data: LoginInfo) => {
     try {
-      const { email, password } = data
-      appDispatch(userSignUp({ email, password })).then((action) => {
+      // const { email, password } = data
+      appDispatch(userSignUp(data)).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
           toast.success('toast.reset.password.success', { duration: 1000 })
         } else {

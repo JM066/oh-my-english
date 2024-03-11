@@ -77,6 +77,7 @@ function Text(props: Props): JSX.Element {
     Boldness[boldness],
     Transform[transform],
     Decoration[decoration],
+    'tw-m-0',
     className,
   )
 

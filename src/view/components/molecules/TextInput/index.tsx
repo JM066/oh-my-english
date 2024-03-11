@@ -33,7 +33,7 @@ function TextInput<T extends LoginInfo>(props: Props & UseControllerProps<T>): J
       <Label>
         <Text text={label} color='Gray800' />
       </Label>
-      <Input type={type} ref={ref} />
+      <Input type={type} ref={ref} className='tw-w-full tw-h-6' />
       <FieldError>
         <Text
           size='Small'

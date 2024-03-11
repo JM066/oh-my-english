@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { useForm } from 'react-hook-form'
-import { Button } from 'react-aria-components'
+// import { Button } from 'react-aria-components'
 import toast from 'react-hot-toast'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -8,6 +8,8 @@ import { useErrorBoundary } from 'react-error-boundary'
 import TextInput from '../../molecules/TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
+import Button from '../../atoms/Button'
+import Text from '../../atoms/Text'
 
 export const schema = yup.object({
   displayName: yup.string(),
@@ -37,7 +39,7 @@ function Login() {
       const { email, password } = data
       appDispatch(userLogin({ email, password })).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          toast('Logged In!', { duration: 1000 })
+          toast('Logged In!', { duration: 3000 })
         } else {
           showBoundary(action)
         }
@@ -50,7 +52,6 @@ function Login() {
     try {
       appDispatch(userLogout()).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          console.log('Logout successful!!')
           toast.success('success!', { duration: 1000 })
         }
       })
@@ -61,12 +62,22 @@ function Login() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput type='email' name='email' label='email' control={control} />
-      <TextInput type='password' name='password' label='password' control={control} />
-      <Button type='submit'>Login</Button>
-      <Button onPress={onLogout} type='button'>
-        Logout
+      <Button theme='Ghost'>
+        <Text as='p' color='Gray500' decoration='Underline' text="Haven't signed up yet?" />
       </Button>
+      <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
+        <TextInput type='email' name='email' label='Email:' control={control} />
+        <TextInput type='password' name='password' label='Password:' control={control} />
+      </div>
+
+      <div className='tw-flex tw-gap-2 tw-py-2'>
+        <Button isDisabled theme='Inverted' size='Medium' type='submit'>
+          <Text as='p' text='Login' />
+        </Button>
+        <Button theme='Inverted' size='Medium' type='submit' onPress={onLogout}>
+          <Text as='p' text='Logout' />
+        </Button>
+      </div>
     </form>
   )
 }

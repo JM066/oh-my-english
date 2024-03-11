@@ -37,13 +37,13 @@ function App() {
     >
       <Suspense fallback={loading()}>
         <AuthProvider>
-          <Header />
           <Toaster
             position='top-right'
             toastOptions={{
               duration: 3000,
             }}
           />
+          {/* <Header /> */}
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<SignIn />} />
