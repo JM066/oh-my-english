@@ -9,7 +9,7 @@ import {
   getUserStatusUpdate,
 } from '../services/auth'
 import { type AuthLogin, type AuthState } from '../types/Auth'
-import { type LoginInfo } from '../view/components/organisms/Login'
+import { type FormValues } from '../view/components/organisms/Login'
 
 const getInitialState = (): AuthState => {
   const initialState: AuthState = {

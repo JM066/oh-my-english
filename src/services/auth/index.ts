@@ -8,7 +8,7 @@ import { auth, db } from '../../firebase/firebase.utils'
 import { type AuthLogin } from '../../types/Auth'
 import { storeItem, clearItem, getItem } from '../../utils/storage'
 import { LOCALSTORAGE_USER_KEY } from '../../types/LocalStorage'
-import { type LoginInfo } from '../../view/components/organisms/Login'
+import { type FormValues } from '../../view/components/organisms/Login'
 
 export const setStoredUser = (user: AuthLogin): void => {
   storeItem(LOCALSTORAGE_USER_KEY.User, JSON.stringify(user))
@@ -51,7 +51,7 @@ export const doUserLogout = async () => {
     throw new Error(err.code)
   }
 }
-export const doUserLogin = async (params: LoginInfo): Promise<void> => {
+export const doUserLogin = async (params: FormValues): Promise<void> => {
   try {
     const { email, password } = params
     const { user } = await signInWithEmailAndPassword(auth, email, password)
@@ -64,7 +64,7 @@ export const doUserLogin = async (params: LoginInfo): Promise<void> => {
   }
 }
 
-export const doCreateUser = async (params: LoginInfo): Promise<void> => {
+export const doCreateUser = async (params: FormValues): Promise<void> => {
   try {
     const { email, password, displayName } = params
     const { user } = await createUserWithEmailAndPassword(auth, email, password)

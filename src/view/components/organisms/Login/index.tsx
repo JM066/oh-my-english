@@ -10,31 +10,35 @@ import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
+import { type FormValues } from '../../../../types/Auth'
 
 export const schema = yup.object({
   displayName: yup.string(),
-  email: yup.string().email().required('Email address required'),
+  email: yup.string().email().required(),
   password: yup
     .string()
-    .required('No password provided.')
+    .required()
     .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
-  passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
+  passwordConfirmation: yup
+    .string()
+    .required()
+    .oneOf([yup.ref('password')], 'Passwords must match'),
 })
-export type LoginInfo = yup.InferType<typeof schema>
 
 function Login() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
 
-  const { handleSubmit, control } = useForm<LoginInfo>({
+  const { handleSubmit, control } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       email: '',
       password: '',
     },
   })
-  const onSubmit = async (data: LoginInfo) => {
+  const onSubmit = async (data: FormValues) => {
+    console.log('data', data)
     try {
       const { email, password } = data
       appDispatch(userLogin({ email, password })).then((action) => {
@@ -66,15 +70,21 @@ function Login() {
         <Text as='p' color='Gray500' decoration='Underline' text="Haven't signed up yet?" />
       </Button>
       <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
-        <TextInput type='email' name='email' label='Email:' control={control} />
-        <TextInput type='password' name='password' label='Password:' control={control} />
+        <TextInput type='email' id='email' name='email' label='Email:' control={control} />
+        <TextInput<FormValues>
+          type='password'
+          id='password'
+          name='password'
+          label='Password:'
+          control={control}
+        />
       </div>
 
       <div className='tw-flex tw-gap-2 tw-py-2'>
-        <Button isDisabled theme='Inverted' size='Medium' type='submit'>
+        <Button theme='Inverted' size='Medium' type='submit'>
           <Text as='p' text='Login' />
         </Button>
-        <Button theme='Inverted' size='Medium' type='submit' onPress={onLogout}>
+        <Button theme='Inverted' size='Medium' type='button' onPress={onLogout}>
           <Text as='p' text='Logout' />
         </Button>
       </div>

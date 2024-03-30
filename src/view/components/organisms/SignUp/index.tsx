@@ -7,12 +7,12 @@ import { useErrorBoundary } from 'react-error-boundary'
 import TextInput from '../../molecules/TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
 import { userSignUp } from '../../../../redux/authSlice'
-import { schema, type LoginInfo } from '../Login'
+import { schema, type } from '../Login'
 
 function SignUp() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
-  const { handleSubmit, control } = useForm<LoginInfo>({
+  const { handleSubmit, control } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       displayName: '',
@@ -21,7 +21,7 @@ function SignUp() {
       passwordConfirmation: '',
     },
   })
-  const onSubmit = async (data: LoginInfo) => {
+  const onSubmit = async (data: FormValues) => {
     try {
       // const { email, password } = data
       appDispatch(userSignUp(data)).then((action) => {

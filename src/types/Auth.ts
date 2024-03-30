@@ -19,3 +19,12 @@ export type AuthLogin = {
   token: string
   created_at: Timestamp
 }
+
+export interface FormValues {
+  disaplyName?: string
+  email: string
+  password: string
+  passwordConfirmation: string
+}
+
+export const FIELD_NAMES = ['email', 'password'] as const
