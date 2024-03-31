@@ -20,11 +20,14 @@ export type AuthLogin = {
   created_at: Timestamp
 }
 
-export interface FormValues {
-  disaplyName?: string
+export type LoginValues = {
+  email: string
+  password: string
+}
+export interface SignUpValues {
+  displayName?: string
   email: string
   password: string
   passwordConfirmation: string
 }
-
 export const FIELD_NAMES = ['email', 'password'] as const

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
+
 import { useForm } from 'react-hook-form'
-// import { Button } from 'react-aria-components'
 import toast from 'react-hot-toast'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -10,47 +10,39 @@ import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
-import { type FormValues } from '../../../../types/Auth'
+import { type LoginValues } from '../../../../types/Auth'
 
-export const schema = yup.object({
-  displayName: yup.string(),
+const schema = yup.object({
   email: yup.string().email().required(),
   password: yup
     .string()
     .required()
     .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
-  passwordConfirmation: yup
-    .string()
-    .required()
-    .oneOf([yup.ref('password')], 'Passwords must match'),
 })
 
 function Login() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
 
-  const { handleSubmit, control } = useForm<FormValues>({
+  const { handleSubmit, control } = useForm<LoginValues>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: {},
   })
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = (data: LoginValues) => {
     console.log('data', data)
-    try {
-      const { email, password } = data
-      appDispatch(userLogin({ email, password })).then((action) => {
-        if (action.meta.requestStatus === 'fulfilled') {
-          toast('Logged In!', { duration: 3000 })
-        } else {
-          showBoundary(action)
-        }
-      })
-    } catch (error: unknown) {
-      showBoundary(error)
-    }
+    // try {
+    //   const { email, password } = data
+    //   appDispatch(userLogin({ email, password })).then((action) => {
+    //     if (action.meta.requestStatus === 'fulfilled') {
+    //       toast('Logged In!', { duration: 3000 })
+    //     } else {
+    //       showBoundary(action)
+    //     }
+    //   })
+    // } catch (error: unknown) {
+    //   showBoundary(error)
+    // }
   }
   const onLogout = async () => {
     try {
@@ -70,16 +62,21 @@ function Login() {
         <Text as='p' color='Gray500' decoration='Underline' text="Haven't signed up yet?" />
       </Button>
       <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
-        <TextInput type='email' id='email' name='email' label='Email:' control={control} />
-        <TextInput<FormValues>
-          type='password'
-          id='password'
+        <TextInput<LoginValues>
+          name='email'
+          label='Email:'
+          type='email'
+          control={control}
+          rules={{ required: true }}
+        />
+        <TextInput<LoginValues>
           name='password'
           label='Password:'
+          type='password'
           control={control}
+          rules={{ required: true }}
         />
       </div>
-
       <div className='tw-flex tw-gap-2 tw-py-2'>
         <Button theme='Inverted' size='Medium' type='submit'>
           <Text as='p' text='Login' />

@@ -1,5 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
 import { memo } from 'react'
+import { useLabel } from 'react-aria'
 import Text from '../Text'
 
 const Variant = {
@@ -17,15 +17,16 @@ interface Props {
 function InputInfo(props: Props) {
   const { variant = 'Label', text = '', isRequired, className } = props
   const isLabel = variant === 'Label'
+  const { labelProps } = useLabel({ 'aria-label': `label ${text}`, label: text })
 
   return (
     <Text
       text={isRequired ? `${text} *` : text}
       className={className}
       as={isLabel ? 'label' : 'span'}
+      attributes={isLabel ? labelProps : {}}
       color={isLabel ? 'Default' : 'Red'}
       size={isLabel ? 'Default' : 'Small'}
-      attributes={isLabel ? { 'aria-label': `label ${text}` } : {}}
     />
   )
 }

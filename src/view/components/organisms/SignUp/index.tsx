@@ -4,46 +4,57 @@ import { Button } from 'react-aria-components'
 import toast from 'react-hot-toast'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useErrorBoundary } from 'react-error-boundary'
+import * as yup from 'yup'
 import TextInput from '../../molecules/TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
 import { userSignUp } from '../../../../redux/authSlice'
-import { schema, type } from '../Login'
+import { type SignUpValues } from '../../../../types/Auth'
+
+const schema = yup.object({
+  displayName: yup.string(),
+  email: yup.string().email().required(),
+  password: yup
+    .string()
+    .required()
+    .min(8, 'Password is too short - should be 8 chars minimum.')
+    .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+  passwordConfirmation: yup
+    .string()
+    .required()
+    .oneOf([yup.ref('password')], 'Passwords must match'),
+})
 
 function SignUp() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
-  const { handleSubmit, control } = useForm<FormValues>({
+  const { handleSubmit, control } = useForm<SignUpValues>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      displayName: '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-    },
+    defaultValues: {},
   })
-  const onSubmit = async (data: FormValues) => {
-    try {
-      // const { email, password } = data
-      appDispatch(userSignUp(data)).then((action) => {
-        if (action.meta.requestStatus === 'fulfilled') {
-          toast.success('toast.reset.password.success', { duration: 1000 })
-        } else {
-          showBoundary(action)
-        }
-      })
-    } catch (error: unknown) {
-      showBoundary(error)
-    }
+  const onSubmit = async (data: SignUpValues) => {
+    console.log('dada signup', data)
+    // try {
+    //   // const { email, password } = data
+    //   appDispatch(userSignUp(data)).then((action) => {
+    //     if (action.meta.requestStatus === 'fulfilled') {
+    //       toast.success('toast.reset.password.success', { duration: 1000 })
+    //     } else {
+    //       showBoundary(action)
+    //     }
+    //   })
+    // } catch (error: unknown) {
+    //   showBoundary(error)
+    // }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput type='name' name='displayName' label='name' control={control} />
-      <TextInput type='email' name='email' label='email' control={control} />
-      <TextInput type='password' name='password' label='password' control={control} />
-      <TextInput
-        type='password'
+      <TextInput<SignUpValues> name='displayName' label='name' type='name' control={control} />
+      <TextInput<SignUpValues> name='email' label='email' type='email' control={control} />
+      <TextInput<SignUpValues> name='password' label='password' type='password' control={control} />
+      <TextInput<SignUpValues>
         name='passwordConfirmation'
         label='confirm password'
+        type='password'
         control={control}
       />
       <Button type='submit'>Submit</Button>

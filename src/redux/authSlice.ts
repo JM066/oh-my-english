@@ -24,13 +24,13 @@ const getInitialState = (): AuthState => {
   }
   return initialState
 }
-export const userLogin = createAsyncThunk<void, LoginInfo>('auth/userLogin', doUserLogin)
+export const userLogin = createAsyncThunk<void, FormValues>('auth/userLogin', doUserLogin)
 export const userStatusUpdate = createAsyncThunk<DocumentData, string>(
   'auth/userStatusUpdate',
   getUserStatusUpdate,
 )
 export const userLogout = createAsyncThunk('auth/userLogout', doUserLogout)
-export const userSignUp = createAsyncThunk<void, LoginInfo>('auth/userSignUp', doCreateUser)
+export const userSignUp = createAsyncThunk<void, FormValues>('auth/userSignUp', doCreateUser)
 
 const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogin.pending, (state) => {
