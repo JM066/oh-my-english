@@ -6,7 +6,7 @@ import Text from '../atoms/Text'
 function NavBar() {
   const auth = useAppSelector((state) => state.auth)
   const navigate = useNavigate()
-  console.error('auth auth', auth)
+
   return (
     <nav className='tw-w-full tw-flex tw-items-center tw-justify-between tw-h-14 tw-shadow-lg'>
       <Text text='Logo' />
