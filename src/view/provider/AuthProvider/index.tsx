@@ -7,12 +7,11 @@ import { userLogout, userStatusUpdate } from '../../../redux/authSlice'
 
 // export const AuthContext = createContext()
 const AuthProvider = ({ children }: React.PropsWithChildren) => {
-  const { data } = useAppSelector((state) => state).auth
+  const { data } = useAppSelector((state) => state.auth)
   const appDispatch = useAppDispatch()
 
   function onAuthStateChange() {
     return onAuthStateChanged(auth, (user) => {
-      console.error('gets called?')
       if (user) {
         appDispatch(userStatusUpdate(user.uid)).then((action) => {
           if (action.meta.requestId === data?.userId) {

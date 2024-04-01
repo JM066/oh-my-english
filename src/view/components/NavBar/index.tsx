@@ -4,7 +4,7 @@ import Button from '../atoms/Button'
 import Text from '../atoms/Text'
 
 function NavBar() {
-  const { auth } = useAppSelector((state) => state)
+  const auth = useAppSelector((state) => state.auth)
   const navigate = useNavigate()
 
   return (

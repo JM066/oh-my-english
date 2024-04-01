@@ -1,10 +1,4 @@
-import {
-  type EnhancedStore,
-  combineReducers,
-  configureStore,
-  type ThunkAction,
-  type Action,
-} from '@reduxjs/toolkit'
+import { combineReducers, configureStore, type ThunkAction, type Action } from '@reduxjs/toolkit'
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import logger from 'redux-logger'
 import authSlice from '../redux/authSlice'
