@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import { signInWithEmailAndPassword } from 'firebase/auth'
 import { doUserLogin } from '../../../../services/auth'
 import { render, screen, waitFor } from '../../../../test-utils'
 import Login from './index'
@@ -21,7 +20,7 @@ describe('<Login />', () => {
   })
 
   test('view user email on the screen when log in is successful', async () => {
-    const route = '/login'
+    const route = '/join'
     const { user } = render(<Login />, { route })
     const emailInput = screen.getByRole('textbox', { name: /email/i })
     const passwordInput = screen.getByLabelText('Password:')

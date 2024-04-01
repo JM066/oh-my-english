@@ -11,10 +11,9 @@ import AuthProvider from './view/provider/AuthProvider'
 import Loading from './view/components/loading/Loading'
 import Home from './view/pages/Home'
 import Test from './view/pages/Test'
-import SignIn from './view/pages/SignIn'
+import Join from './view/pages/Join'
 import MainLayout from './view/layout/MainLayout'
 import './App.css'
-import Register from './view/pages/Register'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -49,8 +48,7 @@ function App() {
               />
               <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/login' element={<SignIn />} />
-                <Route path='/signup' element={<Register />} />
+                <Route path='/join' element={<Join />} />
                 <Route path='/test' element={<TestLayout />}>
                   <Route path='/test/:id' element={<Test />} />
                 </Route>

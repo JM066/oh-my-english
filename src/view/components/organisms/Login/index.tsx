@@ -10,8 +10,7 @@ import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
-import CustomLink from '../../atoms/CustomLink'
-import { type LoginValues } from '../../../../types/Auth'
+import { type AuthLogin, type LoginValues } from '../../../../types/Auth'
 
 const schema = yup.object({
   email: yup.string().email().required(),
@@ -21,8 +20,13 @@ const schema = yup.object({
     .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
 })
+interface Props {
+  isLoggedIn: boolean
+  user?: AuthLogin
+}
+function Login(props: Props) {
+  const { isLoggedIn, user } = props
 
-function Login() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
 
@@ -34,13 +38,12 @@ function Login() {
     },
   })
   const onSubmit = (data: LoginValues) => {
-    console.log('data', data)
     try {
       const { email, password } = data
       appDispatch(userLogin({ email, password })).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          reset()
           toast('Logged In!', { duration: 3000 })
+          reset()
         } else {
           showBoundary(action)
         }
@@ -63,30 +66,34 @@ function Login() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
-        <TextInput<LoginValues>
-          name='email'
-          label='Email:'
-          type='email'
-          control={control}
-          rules={{ required: true }}
-        />
-        <TextInput<LoginValues>
-          name='password'
-          label='Password:'
-          type='password'
-          control={control}
-          rules={{ required: true }}
-        />
-      </div>
-      <div className='tw-flex tw-gap-2 tw-py-2'>
-        <Button theme='Inverted' size='Medium' type='submit'>
-          <Text as='p' text='Login' />
-        </Button>
-        <Button theme='Inverted' size='Medium' type='button' onPress={onLogout}>
-          <Text as='p' text='Logout' />
-        </Button>
-      </div>
+      {isLoggedIn ? (
+        <Text as='p' size='XLarge' text={user?.displayName || user?.email} />
+      ) : (
+        <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
+          <TextInput<LoginValues>
+            name='email'
+            label='Email:'
+            type='email'
+            control={control}
+            rules={{ required: true }}
+          />
+          <TextInput<LoginValues>
+            name='password'
+            label='Password:'
+            type='password'
+            control={control}
+            rules={{ required: true }}
+          />
+        </div>
+      )}
+      <Button
+        theme='Inverted'
+        size='Medium'
+        type={isLoggedIn ? 'button' : 'submit'}
+        onPress={onLogout}
+      >
+        <Text as='p' text={isLoggedIn ? 'Logout' : 'Login'} />
+      </Button>
     </form>
   )
 }

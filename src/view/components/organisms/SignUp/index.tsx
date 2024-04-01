@@ -27,7 +27,7 @@ const schema = yup.object({
 function SignUp() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
-  const { handleSubmit, control } = useForm<SignUpValues>({
+  const { handleSubmit, control, reset } = useForm<SignUpValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       displayName: '',
@@ -41,7 +41,8 @@ function SignUp() {
     try {
       appDispatch(userSignUp(data)).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          toast.success('toast.reset.password.success', { duration: 1000 })
+          toast.success('Signed up', { duration: 1000 })
+          reset()
         } else {
           showBoundary(action)
         }
