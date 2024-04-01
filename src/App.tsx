@@ -14,6 +14,7 @@ import Test from './view/pages/Test'
 import SignIn from './view/pages/SignIn'
 import MainLayout from './view/layout/MainLayout'
 import './App.css'
+import Register from './view/pages/Register'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -49,6 +50,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<SignIn />} />
+                <Route path='/signup' element={<Register />} />
                 <Route path='/test' element={<TestLayout />}>
                   <Route path='/test/:id' element={<Test />} />
                 </Route>

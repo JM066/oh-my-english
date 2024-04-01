@@ -8,8 +8,7 @@ import {
   doCreateUser,
   getUserStatusUpdate,
 } from '../services/auth'
-import { type AuthLogin, type AuthState } from '../types/Auth'
-import { type FormValues } from '../view/components/organisms/Login'
+import { type AuthLogin, type AuthState, type LoginValues, type SignUpValues } from '../types/Auth'
 
 const getInitialState = (): AuthState => {
   const initialState: AuthState = {
@@ -24,13 +23,13 @@ const getInitialState = (): AuthState => {
   }
   return initialState
 }
-export const userLogin = createAsyncThunk<void, FormValues>('auth/userLogin', doUserLogin)
+export const userLogin = createAsyncThunk<void, LoginValues>('auth/userLogin', doUserLogin)
 export const userStatusUpdate = createAsyncThunk<DocumentData, string>(
   'auth/userStatusUpdate',
   getUserStatusUpdate,
 )
 export const userLogout = createAsyncThunk('auth/userLogout', doUserLogout)
-export const userSignUp = createAsyncThunk<void, FormValues>('auth/userSignUp', doCreateUser)
+export const userSignUp = createAsyncThunk<void, SignUpValues>('auth/userSignUp', doCreateUser)
 
 const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogin.pending, (state) => {

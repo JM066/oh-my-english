@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
+import CustomLink from '../../atoms/CustomLink'
 import { type LoginValues } from '../../../../types/Auth'
 
 const schema = yup.object({
@@ -25,24 +26,28 @@ function Login() {
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
 
-  const { handleSubmit, control } = useForm<LoginValues>({
+  const { handleSubmit, control, reset } = useForm<LoginValues>({
     resolver: yupResolver(schema),
-    defaultValues: {},
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
   const onSubmit = (data: LoginValues) => {
     console.log('data', data)
-    // try {
-    //   const { email, password } = data
-    //   appDispatch(userLogin({ email, password })).then((action) => {
-    //     if (action.meta.requestStatus === 'fulfilled') {
-    //       toast('Logged In!', { duration: 3000 })
-    //     } else {
-    //       showBoundary(action)
-    //     }
-    //   })
-    // } catch (error: unknown) {
-    //   showBoundary(error)
-    // }
+    try {
+      const { email, password } = data
+      appDispatch(userLogin({ email, password })).then((action) => {
+        if (action.meta.requestStatus === 'fulfilled') {
+          reset()
+          toast('Logged In!', { duration: 3000 })
+        } else {
+          showBoundary(action)
+        }
+      })
+    } catch (error: unknown) {
+      showBoundary(error)
+    }
   }
   const onLogout = async () => {
     try {
@@ -58,9 +63,6 @@ function Login() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Button theme='Ghost'>
-        <Text as='p' color='Gray500' decoration='Underline' text="Haven't signed up yet?" />
-      </Button>
       <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
         <TextInput<LoginValues>
           name='email'

@@ -1,14 +1,13 @@
+import CustomLink from '../../components/atoms/CustomLink'
 import Login from '../../components/organisms/Login'
-import SignUp from '../../components/organisms/SignUp'
 
 function SignIn(): JSX.Element {
   // Todo : Refctore Login & SignUp and styling
+
   return (
     <div>
-      <h2>Login</h2>
+      <CustomLink path='signup'>Register with us</CustomLink>
       <Login />
-      <h2>SignUp</h2>
-      <SignUp />
     </div>
   )
 }

@@ -29,22 +29,26 @@ function SignUp() {
   const { showBoundary } = useErrorBoundary()
   const { handleSubmit, control } = useForm<SignUpValues>({
     resolver: yupResolver(schema),
-    defaultValues: {},
+    defaultValues: {
+      displayName: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+    },
   })
   const onSubmit = async (data: SignUpValues) => {
     console.log('dada signup', data)
-    // try {
-    //   // const { email, password } = data
-    //   appDispatch(userSignUp(data)).then((action) => {
-    //     if (action.meta.requestStatus === 'fulfilled') {
-    //       toast.success('toast.reset.password.success', { duration: 1000 })
-    //     } else {
-    //       showBoundary(action)
-    //     }
-    //   })
-    // } catch (error: unknown) {
-    //   showBoundary(error)
-    // }
+    try {
+      appDispatch(userSignUp(data)).then((action) => {
+        if (action.meta.requestStatus === 'fulfilled') {
+          toast.success('toast.reset.password.success', { duration: 1000 })
+        } else {
+          showBoundary(action)
+        }
+      })
+    } catch (error: unknown) {
+      showBoundary(error)
+    }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
