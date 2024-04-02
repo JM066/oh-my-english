@@ -16,12 +16,14 @@ const AuthProvider = ({ children }: React.PropsWithChildren) => {
         appDispatch(userStatusUpdate(user.uid)).then((action) => {
           if (action.meta.requestId === data?.userId) {
             toast('Logged Updated!', { duration: 1000 })
+            appDispatch(authLoading(false))
           }
         })
       } else {
         appDispatch(userLogout()).then((action) => {
           if (action.meta.requestStatus === 'fulfilled') {
             toast('Logged out!', { duration: 1000 })
+            appDispatch(authLoading(false))
           }
         })
       }

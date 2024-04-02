@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useRef, type ReactNode } from 'react'
+import { useRef, type ReactNode, MutableRefObject } from 'react'
 import { useButton, type AriaButtonOptions } from 'react-aria'
 import { type PressEvent } from '@react-types/shared'
 import { twMerge } from '../../../../utils/tailwind'
@@ -48,6 +48,7 @@ export interface Props {
   isLoading?: boolean
   isDisabled?: boolean
   options?: Omit<AriaButtonOptions<'button'>, 'onPress' | 'type' | 'isDisabled'>
+  buttonRef?: MutableRefObject<null>
 }
 
 function Button(props: Props): JSX.Element {
@@ -62,10 +63,11 @@ function Button(props: Props): JSX.Element {
     isLoading = false,
     isDisabled = false,
     options = {},
+    buttonRef,
   } = props
 
   const ref = useRef(null)
-  const { buttonProps } = useButton({ ...options, onPress, type, isDisabled }, ref)
+  const { buttonProps } = useButton({ ...options, onPress, type, isDisabled }, buttonRef ?? ref)
 
   const classNames: string = twMerge(
     className,

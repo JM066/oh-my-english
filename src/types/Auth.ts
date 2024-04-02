@@ -9,6 +9,7 @@ export interface AuthState {
   data?: AuthLogin
   isLoggedIn: boolean
   isRegistered: boolean
+  isFetched: boolean
 }
 
 export type AuthLogin = {
@@ -25,7 +26,7 @@ export type LoginValues = {
   password: string
 }
 export interface SignUpValues {
-  displayName?: string
+  displayName: string
   email: string
   password: string
   passwordConfirmation: string

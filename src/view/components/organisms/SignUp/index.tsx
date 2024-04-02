@@ -11,7 +11,7 @@ import { userSignUp } from '../../../../redux/authSlice'
 import { type SignUpValues } from '../../../../types/Auth'
 
 const schema = yup.object({
-  displayName: yup.string(),
+  displayName: yup.string().required(),
   email: yup.string().email().required(),
   password: yup
     .string()

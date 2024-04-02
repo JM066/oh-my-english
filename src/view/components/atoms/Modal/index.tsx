@@ -11,14 +11,14 @@ export interface Props {
 }
 function Modal(props: Props) {
   const { state, children, modalClassName, options = {} } = props
-  const modalRef = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const underlayRef = useRef<HTMLDivElement>(null)
   const { modalProps, underlayProps } = useModalOverlay({ ...options }, state, ref)
 
   return (
     <Overlay>
       <div ref={underlayRef} {...underlayProps}>
-        <div {...modalProps} ref={modalRef} className={modalClassName}>
+        <div {...modalProps} ref={ref} className={modalClassName}>
           {children}
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { useAppSelector } from '../../../stores/appStore'
 import Login from '../../components/organisms/Login'
-import SignUp from '../SignUp'
 
 function Join(): JSX.Element {
   // Todo : Refctore Login & SignUp and styling
@@ -9,7 +8,6 @@ function Join(): JSX.Element {
   return (
     <div>
       <Login isLoggedIn={isLoggedIn} user={data} />
-      {!isLoggedIn && <SignUp />}
     </div>
   )
 }

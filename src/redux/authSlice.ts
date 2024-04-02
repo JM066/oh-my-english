@@ -15,6 +15,7 @@ const getInitialState = (): AuthState => {
     status: 'idle',
     isLoggedIn: false,
     isRegistered: false,
+    isFetched: false,
   }
   const storedUser: AuthLogin | null = getStoredUser()
   if (storedUser) {
@@ -49,16 +50,18 @@ const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
 // Todo: correct the type
 const userStatusUpdateBuilder = (builder: ActionReducerMapBuilder<DocumentData>) => {
   builder.addCase(userStatusUpdate.pending, (state) => {
-    state.status = 'pending'
+    state.isFetched = false
   })
   builder.addCase(userStatusUpdate.fulfilled, (state, action) => {
-    state.status = 'idle'
-    state = action.payload
+    state.data = action.payload
+    state.isLoggedIn = !!action.payload.userId
+    state.isFetched = true
     delete state.error
   })
   builder.addCase(userStatusUpdate.rejected, (state, action) => {
-    state.status = 'idle'
+    state.isFetched = false
     state.error = action.error.message
+    state.isFetched = true
   })
 }
 const userSignUpBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
@@ -96,7 +99,11 @@ const createAuthSlice = (initialState: AuthState) =>
   createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+      // authLoading(state, action: PayloadAction<boolean>) {
+      //   state.loading = action.payload
+      // },
+    },
     extraReducers: (builder) => {
       userLoginBuilder(builder)
       userStatusUpdateBuilder(builder)
