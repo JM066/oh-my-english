@@ -1,36 +1,36 @@
 import { cloneElement, useRef, type ReactElement, type ComponentProps } from 'react'
 import { useOverlayTriggerState } from 'react-stately'
-import { useOverlayTrigger } from 'react-aria'
+import { mergeProps, useOverlayTrigger } from 'react-aria'
 import Modal from '../Modal'
 import Button from '../Button'
 
 export interface Props {
   trigger: React.ReactNode
   modal: (close: () => void) => ReactElement
-  triggerProps?: ComponentProps<typeof Button>
+  customTriggerProps?: ComponentProps<typeof Button>
   modalClassName?: string
+  triggerClassname?: string
   isOpen?: boolean
   onOpenChange?: (isOpen: boolean) => void
 }
 
 function ModalTrigger(props: Props) {
-  const { trigger, isOpen, onOpenChange, modal, modalClassName } = props
+  const { trigger, isOpen, onOpenChange, modal, modalClassName, customTriggerProps } = props
   const ref = useRef(null)
   const state = useOverlayTriggerState({ isOpen, onOpenChange })
-  const { triggerProps, overlayProps } = useOverlayTrigger(
+  const { triggerProps: ariaTriggerProps, overlayProps } = useOverlayTrigger(
     {
       type: 'dialog',
     },
     state,
     ref,
   )
+  const triggerProps = mergeProps(ariaTriggerProps, customTriggerProps)
 
   return (
     <>
       <Button
-        size='Custom'
-        theme='Custom'
-        className='tw-border-none'
+        className='tw-bg-transparent tw-border-none tw-outline-none'
         {...triggerProps}
         buttonRef={ref}
       >

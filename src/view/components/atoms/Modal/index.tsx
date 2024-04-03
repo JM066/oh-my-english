@@ -10,14 +10,14 @@ export interface Props {
   options?: AriaModalOverlayProps
 }
 function Modal(props: Props) {
-  const { state, children, modalClassName, options = {} } = props
+  const { state, children, modalClassName, underlayClassName, options = {} } = props
   const ref = useRef<HTMLDivElement>(null)
   const underlayRef = useRef<HTMLDivElement>(null)
   const { modalProps, underlayProps } = useModalOverlay({ ...options }, state, ref)
 
   return (
     <Overlay>
-      <div ref={underlayRef} {...underlayProps}>
+      <div ref={underlayRef} className={underlayClassName} {...underlayProps}>
         <div {...modalProps} ref={ref} className={modalClassName}>
           {children}
         </div>

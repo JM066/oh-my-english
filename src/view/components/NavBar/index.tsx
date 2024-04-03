@@ -7,7 +7,7 @@ function NavBar() {
   const { isLoggedIn, isFetched, data } = useAppSelector((state) => state.auth)
   const renderModal = (close: () => void) => {
     return (
-      <div className='tw-w-full'>
+      <div className='tw-h-1/3 tw-w-full'>
         <Button onPress={close}>X</Button>
         {isLoggedIn ? <Button>Logout</Button> : <Button>Loggin</Button>}
       </div>
@@ -20,10 +20,12 @@ function NavBar() {
           isLoggedIn ? <Text as='p' text={data?.displayName} /> : <Text as='p' text='Login' />
         }
         modal={renderModal}
-        triggerProps={{
-          className: 'tw-outline-none tw-bg-gray-500',
+        customTriggerProps={{
+          theme: 'Ghost',
+          className: 'tw-z-[50]',
         }}
-        modalClassName='tw-top-0 tw-2/3 tw-h-99 tw-bg-gray-300'
+        // triggerClassname='tw-relative tw-p-2'
+        modalClassName='tw-top-0 tw-right-0 tw-w-2/3 tw-h-[500px]'
       />
     )
   }
@@ -31,6 +33,9 @@ function NavBar() {
     <nav className='tw-w-full tw-flex tw-items-center tw-justify-between tw-h-14 tw-shadow-lg'>
       <Text text='Logo' />
       {isFetched && renderUserStatus()}
+      <Button {...triggerProps} buttonRef={ref}>
+        {label}
+      </Button>
     </nav>
   )
 }
