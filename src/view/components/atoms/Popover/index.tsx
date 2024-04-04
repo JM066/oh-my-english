@@ -13,10 +13,9 @@ interface Props {
   children?: ReactNode
   state: OverlayTriggerState
   offset?: number
-  placement?: Placement
   popoverClassName?: string
   underlayClassName?: string
-  options?: Omit<AriaPopoverProps, 'triggerRef' | 'popoverRef' | 'offset' | 'placement'>
+  options?: Omit<AriaPopoverProps, 'triggerRef' | 'popoverRef' | 'offset'>
 }
 
 function Popover(props: Props): JSX.Element {
@@ -25,7 +24,6 @@ function Popover(props: Props): JSX.Element {
     children,
     state,
     offset,
-    placement = 'bottom start',
     popoverClassName,
     underlayClassName,
     options = {},
@@ -37,7 +35,6 @@ function Popover(props: Props): JSX.Element {
     {
       ...options,
       offset,
-      placement,
       popoverRef,
       triggerRef,
     },

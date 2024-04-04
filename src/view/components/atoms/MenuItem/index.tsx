@@ -12,12 +12,12 @@ interface Props {
 function MenuItem(props: Props) {
   const { item, state, options, menuItemClassName } = props
   const ref = useRef(null)
-  const { menuItemProps, isSelected } = useMenuItem(
+  const { menuItemProps } = useMenuItem(
     { 'aria-label': `dropdown item ${item.key}`, ...options, key: item.key },
     state,
     ref,
   )
-  const classNames = twMerge(isSelected ? 'tw-bg-gray-300' : '', menuItemClassName)
+  const classNames = twMerge('tw-outline-none', menuItemClassName)
   return (
     <li {...menuItemProps} ref={ref} className={classNames}>
       {item.rendered}

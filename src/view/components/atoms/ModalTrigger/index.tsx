@@ -28,7 +28,7 @@ function ModalTrigger(props: Props) {
   const triggerProps = mergeProps(ariaTriggerProps, customTriggerProps)
 
   return (
-    <>
+    <div>
       <Button
         className='tw-bg-transparent tw-border-none tw-outline-none'
         {...triggerProps}
@@ -41,7 +41,7 @@ function ModalTrigger(props: Props) {
           {cloneElement(modal(state.close), overlayProps)}
         </Modal>
       )}
-    </>
+    </div>
   )
 }
 ModalTrigger.whyDidYouRender = true

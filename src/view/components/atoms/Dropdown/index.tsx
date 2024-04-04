@@ -16,9 +16,21 @@ interface Props {
   onAction?: (key: Key) => void
   menuClassName?: string
   className?: string
+  popoverClassName?: string
+  underlayClassName?: string
 }
 function Dropdown(props: Props) {
-  const { label = '', options, children, menuOptions, onAction, menuClassName, className } = props
+  const {
+    label = '',
+    options,
+    children,
+    menuOptions,
+    onAction,
+    menuClassName,
+    className,
+    popoverClassName,
+    underlayClassName,
+  } = props
   const ref = useRef(null)
   const state = useMenuTriggerState({
     ...options,
@@ -35,16 +47,16 @@ function Dropdown(props: Props) {
   )
 
   return (
-    <span className={twMerge(' tw-flex tw-flex-col tw-gap-1', className)}>
-      <Button {...menuTriggerProps} buttonRef={ref} theme='Ghost'>
+    <span className={twMerge('tw-gap-2', className)}>
+      <Button {...menuTriggerProps} buttonRef={ref} className='tw-inline-block' theme='Ghost'>
         <Text text={label} />
       </Button>
       {state.isOpen && (
         <Popover
           state={state}
           triggerRef={ref}
-          placement='bottom start'
-          popoverClassName='tw-absolute top-0 left-0 tw-bg-red-500 tw-h-[300px] tw-w-[300px]'
+          popoverClassName={`${popoverClassName} tw-top-6 tw-right-0`}
+          underlayClassName={underlayClassName}
         >
           {menu}
         </Popover>

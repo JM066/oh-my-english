@@ -15,11 +15,7 @@ function NavBar() {
   const renderUserStatus = () => {
     const loginStatus = isLoggedIn ? 'logout' : 'login'
     return (
-      <Dropdown
-        label={isLoggedIn ? data?.displayName : 'Login'}
-        onAction={onAction}
-        menuClassName='tw-bg-gray-400'
-      >
+      <Dropdown label={isLoggedIn ? data?.displayName : 'Login'} onAction={onAction}>
         <Item key='setting' textValue='setting'>
           Setting
         </Item>
@@ -30,8 +26,9 @@ function NavBar() {
     )
   }
   return (
-    <nav className='tw-w-full tw-flex tw-items-center tw-justify-between tw-h-14 tw-shadow-lg'>
+    <nav className='tw-w-full tw-flex tw-items-center tw-justify-between tw-shadow-lg'>
       <Text text='Logo' />
+
       {isFetched && renderUserStatus()}
     </nav>
   )
