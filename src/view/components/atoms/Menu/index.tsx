@@ -6,22 +6,23 @@ import MenuItem from '../MenuItem'
 
 interface Props extends AriaMenuProps<AriaMenuItemProps> {
   className?: string
-  options?: AriaMenuProps<AriaMenuItemProps>
 }
 
 function Menu(props: Props) {
+  const { className } = props
   const state = useTreeState(props)
 
   const ref = useRef(null)
   const { menuProps } = useMenu(props, state, ref)
-
   const renderedItems = useMemo(
     () =>
-      [...state.collection].map((item) => <MenuItem key={item.key} item={item} state={state} />),
+      [...state.collection].map((item) => (
+        <MenuItem key={item.key} item={item} state={state} menuItemClassName={className} />
+      )),
     [state.collection],
   )
   return (
-    <ul {...menuProps} ref={ref}>
+    <ul {...menuProps} ref={ref} className={className}>
       {renderedItems}
     </ul>
   )

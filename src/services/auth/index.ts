@@ -34,7 +34,6 @@ export const getUserStatusUpdate = async (userId: string): Promise<DocumentData>
       userId: userSnap.id,
       ...userSnap.data(),
     }
-    console.log('userInfo', userInfo)
     return userInfo
   } catch (error: unknown) {
     const err = error as FirebaseError

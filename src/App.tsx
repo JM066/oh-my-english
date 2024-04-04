@@ -48,7 +48,7 @@ function App() {
               />
               <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/join' element={<Join />} />
+                <Route path='/login' element={<Join />} />
                 <Route path='/test' element={<TestLayout />}>
                   <Route path='/test/:id' element={<Test />} />
                 </Route>

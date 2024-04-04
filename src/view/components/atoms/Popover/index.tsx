@@ -48,9 +48,6 @@ function Popover(props: Props): JSX.Element {
     <Overlay>
       <div {...underlayProps} className={underlayClassName} />
       <div {...popoverProps} ref={popoverRef} className={popoverClassName}>
-        <svg className='arrow' data-placement={placement} viewBox='0 0 12 12'>
-          <path d='M0 0 L6 6 L12 0' />
-        </svg>
         <DismissButton onDismiss={state.close} />
         {children}
         <DismissButton onDismiss={state.close} />

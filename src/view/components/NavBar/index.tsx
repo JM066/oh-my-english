@@ -1,41 +1,38 @@
+import { type Key } from 'react'
+import { Item } from 'react-stately'
+import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../../stores/appStore'
 import Text from '../atoms/Text'
-import ModalTrigger from '../atoms/ModalTrigger'
-import Button from '../atoms/Button'
+import Dropdown from '../atoms/Dropdown'
 
 function NavBar() {
   const { isLoggedIn, isFetched, data } = useAppSelector((state) => state.auth)
-  const renderModal = (close: () => void) => {
-    return (
-      <div className='tw-h-1/3 tw-w-full'>
-        <Button onPress={close}>X</Button>
-        {isLoggedIn ? <Button>Logout</Button> : <Button>Loggin</Button>}
-      </div>
-    )
+  const navigate = useNavigate()
+
+  const onAction = (key: Key) => {
+    navigate(`/${key}`)
   }
   const renderUserStatus = () => {
+    const loginStatus = isLoggedIn ? 'logout' : 'login'
     return (
-      <ModalTrigger
-        trigger={
-          isLoggedIn ? <Text as='p' text={data?.displayName} /> : <Text as='p' text='Login' />
-        }
-        modal={renderModal}
-        customTriggerProps={{
-          theme: 'Ghost',
-          className: 'tw-z-[50]',
-        }}
-        // triggerClassname='tw-relative tw-p-2'
-        modalClassName='tw-top-0 tw-right-0 tw-w-2/3 tw-h-[500px]'
-      />
+      <Dropdown
+        label={isLoggedIn ? data?.displayName : 'Login'}
+        onAction={onAction}
+        menuClassName='tw-bg-gray-400'
+      >
+        <Item key='setting' textValue='setting'>
+          Setting
+        </Item>
+        <Item key={loginStatus} textValue={loginStatus}>
+          <Text as='p' text={loginStatus[0].toUpperCase() + loginStatus.substring(1)} />
+        </Item>
+      </Dropdown>
     )
   }
   return (
     <nav className='tw-w-full tw-flex tw-items-center tw-justify-between tw-h-14 tw-shadow-lg'>
       <Text text='Logo' />
       {isFetched && renderUserStatus()}
-      <Button {...triggerProps} buttonRef={ref}>
-        {label}
-      </Button>
     </nav>
   )
 }
