@@ -31,7 +31,7 @@ function Dropdown(props: Props) {
     popoverClassName,
     underlayClassName,
   } = props
-  const ref = useRef(null)
+  const ref = useRef<HTMLButtonElement>(null)
   const state = useMenuTriggerState({
     ...options,
   })

@@ -1,11 +1,5 @@
 import { useRef, type ReactNode } from 'react'
-import {
-  DismissButton,
-  Overlay,
-  usePopover,
-  type AriaPopoverProps,
-  type Placement,
-} from 'react-aria'
+import { DismissButton, Overlay, usePopover, type AriaPopoverProps } from 'react-aria'
 import { type OverlayTriggerState } from 'react-stately'
 
 interface Props {

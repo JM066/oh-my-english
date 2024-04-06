@@ -1,8 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useRef, type ReactNode, type MutableRefObject } from 'react'
+import { useRef, type RefObject, type ReactNode } from 'react'
 import { useButton, type AriaButtonOptions } from 'react-aria'
-import { type PressEvent } from '@react-types/shared'
 import { twMerge } from '../../../../utils/tailwind'
 
 export const Theme = {
@@ -37,8 +36,7 @@ export const Size = {
   Full: 'tw-w-full tw-h-full',
 } as const
 
-export interface Props {
-  onPress?: (e: PressEvent) => void
+export interface Props extends AriaButtonOptions<'button'> {
   children?: ReactNode
   className?: string
   theme?: keyof typeof Theme
@@ -47,8 +45,7 @@ export interface Props {
   type?: 'button' | 'submit' | 'reset'
   isLoading?: boolean
   isDisabled?: boolean
-  options?: Omit<AriaButtonOptions<'button'>, 'onPress' | 'type' | 'isDisabled'>
-  buttonRef?: MutableRefObject<null>
+  buttonRef?: RefObject<HTMLButtonElement>
 }
 
 function Button(props: Props): JSX.Element {
@@ -76,9 +73,9 @@ function Button(props: Props): JSX.Element {
   )
 
   return (
-    <button ref={ref} {...buttonProps} className={classNames}>
+    <span ref={ref} {...buttonProps} className={classNames}>
       {isLoading ? <div className='loader'> </div> : children}
-    </button>
+    </span>
   )
 }
 
