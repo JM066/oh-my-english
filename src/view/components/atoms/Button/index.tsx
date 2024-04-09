@@ -73,9 +73,9 @@ function Button(props: Props): JSX.Element {
   )
 
   return (
-    <span ref={ref} {...buttonProps} className={classNames}>
+    <button ref={ref} {...buttonProps} className={classNames}>
       {isLoading ? <div className='loader'> </div> : children}
-    </span>
+    </button>
   )
 }
 

@@ -7,12 +7,12 @@ const rootReducer = combineReducers({
   auth: authSlice,
 })
 
-export const configureStoreWithMiddlewares = (preloadedState = {}) => {
+export const configureStoreWithMiddlewares = (initialState = {}) => {
   const store = configureStore({
     reducer: rootReducer,
-    preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(logger),
+    preloadedState: initialState,
     devTools: process.env.NODE_ENV !== 'production',
   })
 

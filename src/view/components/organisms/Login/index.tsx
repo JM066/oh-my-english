@@ -72,14 +72,14 @@ function Login(props: Props) {
         <div className='tw-flex tw-flex-col tw-gap-2 tw-py-4'>
           <TextInput<LoginValues>
             name='email'
-            label='Email:'
+            label='email'
             type='email'
             control={control}
             rules={{ required: true }}
           />
           <TextInput<LoginValues>
             name='password'
-            label='Password:'
+            label='password'
             type='password'
             control={control}
             rules={{ required: true }}

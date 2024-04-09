@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { type ReactElement, type ReactNode } from 'react'
 import { render, type RenderOptions } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -36,7 +36,7 @@ function renderWithProviders(
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <BrowserRouter>{children}</BrowserRouter>
+            <MemoryRouter initialEntries={[route]}>{children}</MemoryRouter>
           </Provider>
         </QueryClientProvider>
       </ErrorBoundary>
