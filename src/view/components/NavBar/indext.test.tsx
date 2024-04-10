@@ -26,7 +26,7 @@ test('greets the user', () => {
   expect(screen.getByText(/Mina/i)).toBeInTheDocument()
 })
 
-test('redirects to signin if user is falsy', () => {
+test('redirects to signin if user is falsy', async () => {
   render(<Login isLoggedIn={false} user={undefined} />, { route: '/login' })
-  expect(screen.findByText('Login')).toBeInTheDocument()
+  expect(await screen.findByText('Login')).toBeInTheDocument()
 })
