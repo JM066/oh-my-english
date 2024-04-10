@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useRef, type RefObject, type ReactNode } from 'react'
-import { useButton, type AriaButtonOptions } from 'react-aria'
+import { useButton, type AriaButtonOptions, useObjectRef } from 'react-aria'
 import { twMerge } from '../../../../utils/tailwind'
 
 export const Theme = {
@@ -59,9 +59,9 @@ function Button(props: Props): JSX.Element {
     isDisabled = false,
     buttonRef,
   } = props
-
-  const ref = useRef(null)
-  const { buttonProps } = useButton(props, buttonRef ?? ref)
+  const objRef = useObjectRef(buttonRef)
+  // const ref = useRef(null)
+  const { buttonProps } = useButton(props, objRef)
 
   const classNames: string = twMerge(
     Theme[theme],
@@ -73,7 +73,7 @@ function Button(props: Props): JSX.Element {
   )
 
   return (
-    <button ref={ref} {...buttonProps} className={classNames}>
+    <button ref={objRef} {...buttonProps} className={classNames}>
       {isLoading ? <div className='loader'> </div> : children}
     </button>
   )

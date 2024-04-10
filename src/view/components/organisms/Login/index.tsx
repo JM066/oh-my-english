@@ -38,6 +38,7 @@ function Login(props: Props) {
     },
   })
   const onSubmit = (data: LoginValues) => {
+    console.error('data', data)
     try {
       const { email, password } = data
       appDispatch(userLogin({ email, password })).then((action) => {

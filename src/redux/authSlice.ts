@@ -61,6 +61,7 @@ const userStatusUpdateBuilder = (builder: ActionReducerMapBuilder<DocumentData>)
   builder.addCase(userStatusUpdate.rejected, (state, action) => {
     state.isFetched = false
     state.error = action.error.message
+    state.isLoggedIn = false
     state.isFetched = true
   })
 }
@@ -85,12 +86,12 @@ const userLogoutBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   })
   builder.addCase(userLogout.fulfilled, (state) => {
     state.status = 'idle'
-    state.isLoggedIn = true
+    state.isLoggedIn = false
     delete state.error
   })
   builder.addCase(userLogout.rejected, (state, action) => {
     state.status = 'idle'
-    state.isLoggedIn = false
+    state.isLoggedIn = true
     state.error = action.error.message
   })
 }

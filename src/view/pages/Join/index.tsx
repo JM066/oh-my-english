@@ -3,8 +3,7 @@ import Login from '../../components/organisms/Login'
 
 function Join(): JSX.Element {
   // Todo : Refctore Login & SignUp and styling
-  const { data } = useAppSelector((state) => state.auth)
-  const isLoggedIn = data?.userId != null
+  const { data, isLoggedIn } = useAppSelector((state) => state.auth)
   return (
     <div>
       <Login isLoggedIn={isLoggedIn} user={data} />

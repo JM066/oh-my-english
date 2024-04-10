@@ -55,7 +55,7 @@ function Dropdown(props: Props) {
         <Popover
           state={state}
           triggerRef={ref}
-          popoverClassName={`${popoverClassName} tw-top-6 tw-right-0`}
+          popoverClassName={`${popoverClassName}`}
           underlayClassName={underlayClassName}
         >
           {menu}
