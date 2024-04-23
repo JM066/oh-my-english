@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useRef, type RefObject, type ReactNode } from 'react'
+import { type RefObject, type ReactNode } from 'react'
 import { useButton, type AriaButtonOptions, useObjectRef } from 'react-aria'
 import { twMerge } from '../../../../utils/tailwind'
 
