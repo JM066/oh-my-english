@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase/firestore'
 import NavBar from '.'
-import { render, screen } from '../../../test-utils'
-import Login from '../organisms/Login'
+import { render, screen } from '../../../../test-utils'
+import Login from '../../molecules/Login'
 
 test('greets the user', () => {
   render(<NavBar />, {

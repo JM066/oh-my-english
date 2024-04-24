@@ -12,7 +12,7 @@
     "format": "prettier --write --cache .",
     "preview": "vite preview",
     "test": "jest",
-    "cypress:open": "cypress open --e2e"
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@firebase/util": "^1.9.4",

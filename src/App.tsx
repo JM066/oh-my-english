@@ -14,6 +14,8 @@ import Test from './view/pages/Test'
 import Join from './view/pages/Join'
 import MainLayout from './view/layout/MainLayout'
 import './App.css'
+import appRoute from './utils/routes'
+import WebRoute from './types/WebRoute'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -29,6 +31,20 @@ const queryClient = new QueryClient({
 })
 
 function App() {
+  const routes = appRoute().map((route, idx) => {
+    const key = `route_${idx}`
+    return (
+      <Route key={key} path={route.path} element={<route.Component />}>
+        {route.subRoutes?.map((subRoute, subIdx) => {
+          const subKey = `subRoute_${subIdx}`
+          return (
+            <Route key={`${key}_${subKey}`} path={subRoute.path} element={<subRoute.Component />} />
+          )
+        })}
+      </Route>
+    )
+  })
+
   return (
     <PersistQueryClientProvider
       client={queryClient}
@@ -46,13 +62,7 @@ function App() {
                   duration: 3000,
                 }}
               />
-              <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/login' element={<Join />} />
-                <Route path='/test' element={<TestLayout />}>
-                  <Route path='/test/:id' element={<Test />} />
-                </Route>
-              </Routes>
+              <Routes>{routes}</Routes>
             </MainLayout>
           </ViewportProvider>
         </AuthProvider>

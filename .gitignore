@@ -40,4 +40,5 @@ dist/
 # Test
 coverage/
 serviceAccount.json
+cypress.env.json
 

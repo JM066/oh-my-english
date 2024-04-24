@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 import useBreakPoint from '../../hooks/useBreakPoint'
-import NavBar from '../../components/NavBar'
+import NavBar from '../../components/organisms/NavBar'
 import { twMerge } from '../../../utils/tailwind'
 
 function MainLayout(props: { children: ReactNode }): JSX.Element {

@@ -1,16 +1,14 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useErrorBoundary } from 'react-error-boundary'
-import TextInput from '../../molecules/TextInput'
+import TextInput from '../TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
 import { type AuthLogin, type LoginValues } from '../../../../types/Auth'
+import { useNavigate } from 'react-router-dom'
 
 const schema = yup.object({
   email: yup.string().email().required(),
@@ -26,7 +24,7 @@ interface Props {
 }
 function Login(props: Props) {
   const { isLoggedIn, user } = props
-
+  const navigate = useNavigate()
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
 
@@ -38,13 +36,11 @@ function Login(props: Props) {
     },
   })
   const onSubmit = (data: LoginValues) => {
-    console.error('data', data)
     try {
       const { email, password } = data
       appDispatch(userLogin({ email, password })).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          toast('Logged In!', { duration: 3000 })
-          reset()
+          navigate('/test')
         } else {
           showBoundary(action)
         }
@@ -57,7 +53,7 @@ function Login(props: Props) {
     try {
       appDispatch(userLogout()).then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
-          toast.success('success!', { duration: 1000 })
+          navigate('/')
         }
       })
     } catch (error: unknown) {
@@ -87,14 +83,15 @@ function Login(props: Props) {
           />
         </div>
       )}
-      <Button
-        theme='Inverted'
-        size='Medium'
-        type={isLoggedIn ? 'button' : 'submit'}
-        onPress={onLogout}
-      >
-        <Text as='p' text={isLoggedIn ? 'Logout' : 'Login'} />
-      </Button>
+      {!isLoggedIn ? (
+        <Button theme='Default' size='Medium' type='submit'>
+          <Text as='p' text='Login' />
+        </Button>
+      ) : (
+        <Button theme='Inverted' size='Medium' type='button' onPress={onLogout}>
+          <Text as='p' text='Logout' />
+        </Button>
+      )}
     </form>
   )
 }

@@ -44,7 +44,9 @@ function Test(): JSX.Element | null {
       list.insertAfter(e.target.key, item)
     }
   }
-
+  const onNext = () => {
+    setCurrent((prev) => Math.min(prev + 1, tests.length - 1))
+  }
   return (
     <div className=''>
       {!isLoading ? (
@@ -61,10 +63,7 @@ function Test(): JSX.Element | null {
               options={{ 'aria-label': `progress bar ${id}` }}
             />
             <Text text={tests[current].answerKr} />
-            <Button
-              theme='Inverted'
-              onPress={() => setCurrent((prev) => Math.min(prev + 1, tests.length - 1))}
-            >
+            <Button theme='Inverted' onPress={onNext}>
               <Text text='Next' />
             </Button>
             <DraggableListBox<ListItem>

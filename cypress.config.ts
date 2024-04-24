@@ -15,5 +15,6 @@ export default defineConfig({
       // implement node event listeners here
       return cypressFirebasePlugin(on, config, admin, { projectId: 'oh-my-english-961db' })
     },
+    specPattern: 'cypress/e2e/**/*.cy.ts',
   },
 })
