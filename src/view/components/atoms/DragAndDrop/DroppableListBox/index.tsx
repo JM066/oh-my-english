@@ -5,11 +5,16 @@ import {
   type DroppableCollectionInsertDropEvent,
 } from '@react-types/shared'
 
-import { useDroppableCollectionState, useListState } from 'react-stately'
+import {
+  useDraggableCollectionState,
+  useDroppableCollectionState,
+  useListState,
+} from 'react-stately'
 import {
   ListDropTargetDelegate,
   ListKeyboardDelegate,
   mergeProps,
+  useDraggableCollection,
   useDroppableCollection,
   useListBox,
   type AriaListBoxProps,
@@ -26,12 +31,13 @@ interface Props<T> {
 }
 
 function DroppableListBox<T extends object>(props: Props<T>) {
-  const { children, items, options } = props
-  const state = useListState<T>({ children, items, ...options })
+  const { items, options } = props
+  const state = useListState<T>({ items, ...options })
   const ref = useRef(null)
   const { listBoxProps } = useListBox(
     {
       'aria-label': 'droppable list box',
+      shouldSelectOnPressUp: true,
       ...props,
     },
     state,
@@ -43,6 +49,22 @@ function DroppableListBox<T extends object>(props: Props<T>) {
     collection: state.collection,
     selectionManager: state.selectionManager,
   })
+
+  const dragState = useDraggableCollectionState({
+    ...props,
+    collection: state.collection,
+    selectionManager: state.selectionManager,
+    getItems(keys) {
+      return [...keys].map((key) => {
+        const item = state.collection.getItem(key)
+        return {
+          'text/plain': item?.textValue ?? '',
+        }
+      })
+    },
+  })
+
+  useDraggableCollection(props, dragState, ref)
 
   const { collectionProps } = useDroppableCollection(
     {
@@ -60,7 +82,13 @@ function DroppableListBox<T extends object>(props: Props<T>) {
       className='tw-flex tw-gap-2 tw-h-6 tw-bg-slate-300 tw-list-none'
     >
       {[...state.collection].map((item) => (
-        <DropOption key={item.key} item={item} state={state} dropState={dropState} />
+        <DropOption
+          key={item.key}
+          item={item}
+          state={state}
+          dragState={dragState}
+          dropState={dropState}
+        />
       ))}
     </ul>
   )

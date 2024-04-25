@@ -3,7 +3,7 @@ import WebRoute from '../types/WebRoute'
 import TestLayout from '../view/layout/TestLayout'
 import Home from '../view/pages/Home'
 import Join from '../view/pages/Join'
-import Test from '../view/pages/Test'
+import Listening from '../view/pages/Listening'
 
 const appRoute = (): Array<WebRoute> => {
   const { data } = useAppSelector((state) => state.auth)
@@ -15,10 +15,10 @@ const appRoute = (): Array<WebRoute> => {
 
   if (data?.userId) {
     routes.push({
-      path: '/test',
+      path: '/listening',
       Component: TestLayout,
       isPrivate: true,
-      subRoutes: [{ path: '/test/:id', Component: Test }],
+      subRoutes: [{ path: '/listening/:id', Component: Listening }],
     })
   }
 

@@ -19,7 +19,7 @@ function TestTopic(props: Props): JSX.Element | null {
             key={key}
             theme='Inverted'
             size='Medium'
-            onPress={() => navigate(`/test/${category}`)}
+            onPress={() => navigate(`/listening/${category}`)}
           >
             <Text text={category} />
           </Button>
