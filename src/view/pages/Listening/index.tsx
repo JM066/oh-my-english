@@ -1,23 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Item, useListData } from 'react-stately'
-import { type DroppableCollectionInsertDropEvent } from '@react-types/shared'
 import useFetchListeningTest from '../../hooks/api/useFetchListeningTest'
-import LoadingCard from '../../components/atoms/LoadingCard'
 import ProgressBar from '../../components/atoms/ProgressBar'
 import Text from '../../components/atoms/Text'
 import Button from '../../components/atoms/Button'
-import DraggableListBox from '../../components/atoms/DragAndDrop/DraggableListBox'
-import DroppableListBox from '../../components/atoms/DragAndDrop/DroppableListBox'
 import TestItem from '../../components/molecules/TestItem'
-import { ListItem, ListeningTest } from '../../../types/Listening'
 import { addItems, shuffle } from '../../../utils/arrayOperations'
+import { createListItem } from '../../../utils/normalize'
 
 function Listening(): JSX.Element | null {
   const { id } = useParams()
   const [page, setPage] = useState<number>(0)
-  const [current, setCurrent] = useState<ListeningTest>()
-  const [dragItems, setDragItems] = useState<string[]>()
   const { testItems, isLoading } = useFetchListeningTest(id)
   console.error('result', testItems)
 
@@ -31,16 +24,7 @@ function Listening(): JSX.Element | null {
     setPage((prev) => Math.min(prev + 1, testItems.length - 1))
   }
   const shuffledItems = shuffle(addItems(testItems[page]?.words, testItems[page]?.distractors))
-  const createList = (): ListItem[] => {
-    console.error('shuffledItems', shuffledItems)
-    return shuffledItems?.map((item, idx) => {
-      return {
-        id: idx,
-        name: item,
-      }
-    })
-  }
-  console.log('createList', createList())
+
   return (
     <div className=''>
       {!isLoading && (
@@ -55,10 +39,7 @@ function Listening(): JSX.Element | null {
             labelClassName='tw-justify-end'
             options={{ 'aria-label': `progress bar ${id}` }}
           />
-          {testItems.map((testItem, idx) => {
-            const key = `${id}_${idx}`
-            return <TestItem key={key} item={createList()} isVisible={idx === page} />
-          })}
+          <TestItem item={createListItem(shuffledItems)} />
           <Button theme='Inverted' onPress={onNext}>
             <Text text='Next' />
           </Button>

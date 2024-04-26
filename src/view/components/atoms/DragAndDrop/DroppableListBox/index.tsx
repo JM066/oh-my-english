@@ -2,7 +2,8 @@ import { useRef } from 'react'
 import {
   type SelectionMode,
   type CollectionChildren,
-  type DroppableCollectionInsertDropEvent,
+  DroppableCollectionReorderEvent,
+  Key,
 } from '@react-types/shared'
 
 import {
@@ -19,20 +20,20 @@ import {
   useListBox,
   type AriaListBoxProps,
 } from 'react-aria'
-import DropOption from '../DropOption'
+import ReorderableOption from '../ReorderableOption'
 
 interface Props<T> {
   children?: CollectionChildren<T>
   selectionManager: SelectionMode
   acceptedDragTypes: 'all' | Array<string | symbol>
   items: Iterable<T>
-  onInsert: (e: DroppableCollectionInsertDropEvent) => void
+  onReorder: (e: DroppableCollectionReorderEvent) => void
   options?: Omit<AriaListBoxProps<T>, 'children'>
+  removeItem: (item: Key) => void
 }
 
-function DroppableListBox<T extends object>(props: Props<T>) {
-  const { items, options } = props
-  const state = useListState<T>({ items, ...options })
+function DroppableListBox<T extends object>({ removeItem, ...props }: Props<T>) {
+  const state = useListState<T>(props)
   const ref = useRef(null)
   const { listBoxProps } = useListBox(
     {
@@ -75,21 +76,30 @@ function DroppableListBox<T extends object>(props: Props<T>) {
     dropState,
     ref,
   )
+  const onDelete = (key: Key) => {
+    return function () {
+      removeItem(key)
+    }
+  }
+
   return (
     <ul
       {...mergeProps(listBoxProps, collectionProps)}
       ref={ref}
-      className='tw-flex tw-gap-2 tw-h-6 tw-bg-slate-300 tw-list-none'
+      className='tw-flex tw-gap-4 tw-list-none'
     >
-      {[...state.collection].map((item) => (
-        <DropOption
-          key={item.key}
-          item={item}
-          state={state}
-          dragState={dragState}
-          dropState={dropState}
-        />
-      ))}
+      {[...state.collection].map((item) => {
+        return (
+          <ReorderableOption
+            key={item.key}
+            item={item}
+            state={state}
+            dragState={dragState}
+            dropState={dropState}
+            onDelete={onDelete(item.key)}
+          />
+        )
+      })}
     </ul>
   )
 }
