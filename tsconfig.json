@@ -3,7 +3,7 @@
     "target": "ES2020",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
-    "types": ["vite/client", "vitest/globals", "vite-plugin-svgr/client", "cypress"],
+    "types": ["vite/client", "vitest/globals", "vite-plugin-svgr/client"],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowJs": true,
@@ -20,6 +20,13 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["src", ".eslintrc.json", "./jest.config.js", "./cypress.config.ts"],
+  "include": [
+    "src",
+    ".eslintrc.json",
+    "./jest.config.js",
+    "./playwright.config.ts",
+    "vite.config.ts",
+    "./tests"
+  ],
   "exclude": ["node_modules"]
 }

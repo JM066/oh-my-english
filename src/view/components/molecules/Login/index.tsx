@@ -8,7 +8,6 @@ import { userLogin, userLogout } from '../../../../redux/authSlice'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
 import { type AuthLogin, type LoginValues } from '../../../../types/Auth'
-import { useNavigate } from 'react-router-dom'
 
 const schema = yup.object({
   email: yup.string().email().required(),
@@ -24,11 +23,11 @@ interface Props {
 }
 function Login(props: Props) {
   const { isLoggedIn, user } = props
-  const navigate = useNavigate()
+
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
 
-  const { handleSubmit, control, reset } = useForm<LoginValues>({
+  const { handleSubmit, control } = useForm<LoginValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       email: '',

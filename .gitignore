@@ -30,7 +30,7 @@ dev-dist
 *.sw?
 
 # Deploy
-.firebase
+src/firebase
 
 # Cache
 cache/
@@ -40,5 +40,9 @@ dist/
 # Test
 coverage/
 serviceAccount.json
-cypress.env.json
-
+firebaseConfig.json
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+src/firebase/

@@ -11,8 +11,7 @@
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write --cache .",
     "preview": "vite preview",
-    "test": "jest",
-    "cypress:open": "cypress open"
+    "test": "jest"
   },
   "dependencies": {
     "@firebase/util": "^1.9.4",

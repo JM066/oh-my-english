@@ -13,7 +13,7 @@ export const configureStoreWithMiddlewares = (initialState = {}) => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(logger),
     preloadedState: initialState,
-    devTools: process.env.NODE_ENV !== 'production',
+    devTools: import.meta.env.DEV,
   })
 
   return store
