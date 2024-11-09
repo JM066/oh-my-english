@@ -5,9 +5,9 @@ import { twMerge } from '../../../utils/tailwind'
 
 function MainLayout(props: { children: ReactNode }): JSX.Element {
   const { children } = props
-  const { isMobileView } = useBreakPoint()
+  const { isSmallBreakpoint } = useBreakPoint()
   const className = twMerge(
-    isMobileView ? 'tw-w-full' : 'tw-w-1/2',
+    isSmallBreakpoint ? 'tw-w-full' : 'tw-w-1/2',
     'tw-h-full tw-items-center tw-p-4',
   )
   return (

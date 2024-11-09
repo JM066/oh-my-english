@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { useForm } from 'react-hook-form'
 import { Button } from 'react-aria-components'
 import toast from 'react-hot-toast'

@@ -51,17 +51,15 @@ function App() {
     >
       <Suspense fallback={loading()}>
         <AuthProvider>
-          <ViewportProvider>
-            <MainLayout>
-              <Toaster
-                position='top-right'
-                toastOptions={{
-                  duration: 3000,
-                }}
-              />
-              <Routes>{routes}</Routes>
-            </MainLayout>
-          </ViewportProvider>
+          <MainLayout>
+            <Toaster
+              position='top-right'
+              toastOptions={{
+                duration: 3000,
+              }}
+            />
+            <Routes>{routes}</Routes>
+          </MainLayout>
         </AuthProvider>
       </Suspense>
       <ReactQueryDevtools />

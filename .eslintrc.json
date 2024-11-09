@@ -53,9 +53,7 @@
     "import/no-named-as-default-member": "off",
     "import/no-extraneous-dependencies": [
       "error",
-      {
-        "devDependencies": true
-      }
+      { "devDependencies": false, "optionalDependencies": false, "peerDependencies": false }
     ],
     "import/no-unresolved": [2, { "ignore": ["@react-types/shared"] }],
     "import/extensions": [
