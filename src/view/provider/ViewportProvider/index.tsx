@@ -38,6 +38,7 @@ export function ViewportProvider({ children }: { children: ReactNode }): JSX.Ele
   const setViewport = (entries?: ResizeObserverEntry[]) => {
     setViewportSize((state) => {
       if (entries) {
+        // ssonly use the first border box size
         const entry = entries.shift()
         if (entry) return setUsingEntryDimensions(state, entry)
         return setUsingInnerDimensions(state)
