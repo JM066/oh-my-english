@@ -7,7 +7,7 @@
 - Tailwind
 
 **Store:** 
-- Zustand
+- RTK
 
 **DB:** 
 - Firebase
