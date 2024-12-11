@@ -5,13 +5,13 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
-import ViewportProvider from './view/provider/ViewPortProvider'
+// import ViewportProvider from './view/provider/ViewPortProvider'
 import AuthProvider from './view/provider/AuthProvider'
 import Loading from './view/components/loading/Loading'
 
 import MainLayout from './view/layout/MainLayout'
 import './App.css'
-import appRoute from './utils/routes'
+import AppRoute from './utils/routes'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -27,7 +27,7 @@ const queryClient = new QueryClient({
 })
 
 function App() {
-  const routes = appRoute().map((route, idx) => {
+  const routes = AppRoute().map((route, idx) => {
     const key = `route_${idx}`
 
     return (

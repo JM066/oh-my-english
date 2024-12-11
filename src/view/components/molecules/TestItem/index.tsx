@@ -1,6 +1,6 @@
-import { ListItem } from '../../../../types/Listening'
 import { Item, useListData } from 'react-stately'
-import { DroppableCollectionReorderEvent, Key } from 'react-aria'
+import type { DroppableCollectionReorderEvent, Key } from 'react-aria'
+import { type ListItem } from '../../../../types/Listening'
 import DroppableListBox from '../../atoms/DragAndDrop/DroppableListBox'
 
 interface Props {
@@ -21,8 +21,8 @@ function TestItem(props: Props) {
       listData.moveAfter(e.target.key, e.keys)
     }
   }
-  const removeItem = (item: Key) => {
-    listData.remove(item)
+  const removeItem = (key: Key) => {
+    listData.remove(key)
   }
   return (
     <div className=''>
@@ -33,7 +33,7 @@ function TestItem(props: Props) {
         onReorder={onReorder}
         removeItem={removeItem}
       >
-        {(item) => <Item>{item.name}</Item>}
+        {(i) => <Item>{i.name}</Item>}
       </DroppableListBox>
     </div>
   )

@@ -20,6 +20,7 @@ export const configureStoreWithMiddlewares = (initialState = {}) => {
 }
 
 export const appStore = configureStoreWithMiddlewares()
+console.log('appstore', appStore.getState())
 export type RootState = ReturnType<typeof appStore.getState>
 export type AppDispatch = typeof appStore.dispatch
 export type AppStore = ReturnType<typeof configureStoreWithMiddlewares>

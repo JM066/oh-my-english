@@ -1,19 +1,19 @@
 import { useAppSelector } from '../stores/appStore'
-import WebRoute from '../types/WebRoute'
+import type WebRoute from '../types/WebRoute'
 import TestLayout from '../view/layout/TestLayout'
 import Home from '../view/pages/Home'
 import Join from '../view/pages/Join'
 import Listening from '../view/pages/Listening'
 
-const appRoute = (): Array<WebRoute> => {
-  const { data } = useAppSelector((state) => state.auth)
+const AppRoute = (): Array<WebRoute> => {
+  const auth = useAppSelector((state) => state.auth)
 
   const routes: Array<WebRoute> = [
     { path: '/', Component: Home },
     { path: '/login', Component: Join },
   ]
 
-  if (data?.userId) {
+  if (auth?.isLoggedIn) {
     routes.push({
       path: '/listening',
       Component: TestLayout,
@@ -24,4 +24,4 @@ const appRoute = (): Array<WebRoute> => {
 
   return routes
 }
-export default appRoute
+export default AppRoute
