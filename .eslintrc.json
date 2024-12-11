@@ -108,7 +108,7 @@
       }
     },
     {
-      "files": ["vite.config.ts", "cypress.config.ts"],
+      "files": ["vite.config.ts", "playwright.config.ts"],
       "parserOptions": {
         "project": ["./tsconfig.json"]
       }

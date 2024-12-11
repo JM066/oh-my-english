@@ -1,7 +1,7 @@
 import { useRef } from 'react'
-import {
-  type SelectionMode,
-  type CollectionChildren,
+import type {
+  SelectionMode,
+  CollectionChildren,
   DroppableCollectionReorderEvent,
   Key,
 } from '@react-types/shared'
@@ -76,11 +76,6 @@ function DroppableListBox<T extends object>({ removeItem, ...props }: Props<T>) 
     dropState,
     ref,
   )
-  const onDelete = (key: Key) => {
-    return function () {
-      removeItem(key)
-    }
-  }
 
   return (
     <ul
@@ -96,7 +91,7 @@ function DroppableListBox<T extends object>({ removeItem, ...props }: Props<T>) 
             state={state}
             dragState={dragState}
             dropState={dropState}
-            onDelete={onDelete(item.key)}
+            onDelete={() => removeItem(item.key)}
           />
         )
       })}
