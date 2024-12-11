@@ -12,6 +12,7 @@ import Loading from './view/components/loading/Loading'
 import MainLayout from './view/layout/MainLayout'
 import './App.css'
 import AppRoute from './utils/routes'
+import { ViewportProvider } from './view/provider/ViewportProvider'
 
 const loading = () => <Loading />
 const persister = createSyncStoragePersister({
@@ -51,15 +52,17 @@ function App() {
     >
       <Suspense fallback={loading()}>
         <AuthProvider>
-          <MainLayout>
-            <Toaster
-              position='top-right'
-              toastOptions={{
-                duration: 3000,
-              }}
-            />
-            <Routes>{routes}</Routes>
-          </MainLayout>
+          <ViewportProvider>
+            <MainLayout>
+              <Toaster
+                position='top-right'
+                toastOptions={{
+                  duration: 3000,
+                }}
+              />
+              <Routes>{routes}</Routes>
+            </MainLayout>
+          </ViewportProvider>
         </AuthProvider>
       </Suspense>
       <ReactQueryDevtools />
