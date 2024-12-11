@@ -49,6 +49,7 @@
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
     "@nabla/vite-plugin-eslint": "^1.5.0",
+    "@playwright/test": "^1.49.1",
     "@react-types/shared": "^3.22.0",
     "@storybook/addon-actions": "^7.5.1",
     "@storybook/addon-essentials": "^7.5.1",
