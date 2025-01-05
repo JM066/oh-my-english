@@ -1,18 +1,18 @@
 import { defineConfig, devices } from '@playwright/test'
-import { type Credentials } from '@nearform/playwright-firebase'
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // import dotenv from 'dotenv';
+// import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig<Credentials>({
-  testDir: './tests',
+export default defineConfig({
+  testDir: './e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

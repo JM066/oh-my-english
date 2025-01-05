@@ -1,16 +1,31 @@
-import { useMediaQuery } from 'react-responsive'
+import { useEffect, useState } from 'react'
+import useViewport from '../provider/ViewportProvider'
 
 const Breakpoints = {
-  SmallMax: 969,
-  LargeMin: 970,
-  ShortMax: 475,
+  Laptop: 1399,
+  Tablet: 991,
+  Mobile: 767,
 }
 
-function useBreakPoint() {
-  const isSmallBreakpoint = useMediaQuery({ maxWidth: Breakpoints.SmallMax })
-  const isLargeBreakpoint = useMediaQuery({ minWidth: Breakpoints.LargeMin })
-  const isShortViewport = useMediaQuery({ maxHeight: Breakpoints.ShortMax })
+const useBreakpoints = () => {
+  const { width } = useViewport()
+  const [isDesktopView, setIsDesktopView] = useState(width > Breakpoints.Laptop)
+  const [isLaptopView, setIsLaptopView] = useState(
+    width > Breakpoints.Tablet && width <= Breakpoints.Laptop,
+  )
+  const [isTabletView, setIsTabletView] = useState(
+    width > Breakpoints.Mobile && width <= Breakpoints.Tablet,
+  )
+  const [isMobileView, setIsMobileView] = useState(width <= Breakpoints.Mobile)
 
-  return { isSmallBreakpoint, isLargeBreakpoint, isShortViewport }
+  useEffect(() => {
+    setIsDesktopView(width > Breakpoints.Laptop)
+    setIsLaptopView(width > Breakpoints.Tablet && width <= Breakpoints.Laptop)
+    setIsTabletView(width > Breakpoints.Mobile && width <= Breakpoints.Tablet)
+    setIsMobileView(width <= Breakpoints.Mobile)
+  }, [width])
+
+  return { isDesktopView, isLaptopView, isTabletView, isMobileView }
 }
-export default useBreakPoint
+
+export default useBreakpoints

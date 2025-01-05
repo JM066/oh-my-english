@@ -5,7 +5,6 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
-// import ViewportProvider from './view/provider/ViewPortProvider'
 import AuthProvider from './view/provider/AuthProvider'
 import Loading from './view/components/loading/Loading'
 

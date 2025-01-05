@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useErrorBoundary } from 'react-error-boundary'
+import { useNavigate } from 'react-router-dom'
 import TextInput from '../TextInput'
 import { useAppDispatch } from '../../../../stores/appStore'
 import { userLogin, userLogout } from '../../../../redux/authSlice'
@@ -23,6 +24,7 @@ interface Props {
 }
 function Login(props: Props) {
   const { isLoggedIn, user } = props
+  const navigate = useNavigate()
 
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()

@@ -46,3 +46,5 @@ firebaseConfig.json
 /blob-report/
 /playwright/.cache/
 src/firebase/
+
+.codegpt
