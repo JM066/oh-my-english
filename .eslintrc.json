@@ -24,8 +24,17 @@
     "project": ["./tsconfig.json", "./tsconfig.node.json"]
   },
   "ignorePatterns": ["dist", ".eslintrc"],
-  "plugins": ["react", "@typescript-eslint", "prefer-arrow-functions", "vitest", "prettier"],
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "prefer-arrow-functions",
+    "vitest",
+    "prettier"
+  ],
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/naming-convention": [
       "error",
       {
@@ -44,7 +53,7 @@
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-shadow": ["error", { "allow": ["_"] }],
     "@typescript-eslint/no-use-before-define": "error",
@@ -54,7 +63,13 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": ["**/*.test.js", "**/*.spec.js", "**/test/**", "**/tests/**"],
+        "devDependencies": [
+          "**/*.test.js",
+          "**/*.spec.js",
+          "**/test/**",
+          "**/tests/**",
+          "**/*.stories.ts"
+        ],
         "optionalDependencies": false,
         "peerDependencies": false
       }
@@ -90,7 +105,6 @@
         "functions": "defaultArguments"
       }
     ],
-    "react-hooks/exhaustive-deps": "off",
     "semi": ["error", "never"]
   },
   "overrides": [

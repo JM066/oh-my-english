@@ -1,45 +1,48 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import useFetchListeningTest from '../../hooks/api/useFetchListeningTest'
+import useListeningQuestion from '../../hooks/api/useListeningQuestion'
 import ProgressBar from '../../components/atoms/ProgressBar'
 import Text from '../../components/atoms/Text'
 import Button from '../../components/atoms/Button'
-import TestItem from '../../components/molecules/TestItem'
+import List from '../../components/molecules/List'
 import { addItems, shuffle } from '../../../utils/arrayOperations'
-import { createListItem } from '../../../utils/normalize'
 
 function Listening(): JSX.Element | null {
   const { id } = useParams()
   const [page, setPage] = useState<number>(0)
-  const { testItems, isLoading } = useFetchListeningTest(id)
-  console.error('result', testItems)
+  const { listeningData, isLoading } = useListeningQuestion(id)
+  console.error('result', listeningData)
 
   useEffect(() => {
     setPage(0)
-  }, [testItems, isLoading])
+  }, [listeningData, isLoading])
 
-  if (!testItems) return null
+  const onNext = useCallback(() => {
+    if (!listeningData || listeningData.length === 0) return
+    setPage((prev) => Math.min(prev + 1, listeningData.length - 1))
+  }, [listeningData])
 
-  const onNext = () => {
-    setPage((prev) => Math.min(prev + 1, testItems.length - 1))
-  }
-  const shuffledItems = shuffle(addItems(testItems[page]?.words, testItems[page]?.distractors))
+  const shuffledItems = useMemo(() => {
+    if (!listeningData) return []
+    return shuffle(addItems(listeningData[page].words, listeningData[page].distractors))
+  }, [listeningData, page])
 
+  if (!shuffledItems) return null
   return (
     <div className=''>
       {!isLoading && (
         <>
           <ProgressBar
-            label={<Text as='h2' text={`${page + 1}/${testItems.length}`} />}
+            label={<Text as='h2' text={`${page + 1}/${shuffledItems.length}`} />}
             showValueLabel={false}
             value={page + 1}
-            maxValue={testItems.length}
+            maxValue={shuffledItems.length}
             minValue={0}
             color='Success'
             labelClassName='tw-justify-end'
             options={{ 'aria-label': `progress bar ${id}` }}
           />
-          <TestItem item={createListItem(shuffledItems)} />
+          <List item={shuffledItems} />
           <Button theme='Inverted' onPress={onNext}>
             <Text text='Next' />
           </Button>

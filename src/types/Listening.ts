@@ -2,7 +2,7 @@ import { type Timestamp } from 'firebase/firestore'
 
 export type Category = 'food' | 'job'
 
-export interface ListeningTest {
+export interface Listening {
   id: string
   answerKr: string
   distractors: string[]
