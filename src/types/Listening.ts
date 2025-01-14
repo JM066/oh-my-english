@@ -11,6 +11,6 @@ export interface Listening {
   created_at: Timestamp
 }
 export type ListItem = {
-  id: number
+  id: string
   name: string
 }

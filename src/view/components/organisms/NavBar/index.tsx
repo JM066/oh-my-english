@@ -8,7 +8,7 @@ import Dropdown from '../../atoms/Dropdown'
 import { userLogout } from '../../../../redux/authSlice'
 
 function NavBar() {
-  const { isLoggedIn, isFetched, data } = useAppSelector((state) => state.auth)
+  const { isLoggedIn, data } = useAppSelector((state) => state.auth)
   const navigate = useNavigate()
   const appDispatch = useAppDispatch()
   const { showBoundary } = useErrorBoundary()
@@ -50,7 +50,7 @@ function NavBar() {
   return (
     <nav className='tw-w-full tw-flex tw-items-center tw-justify-between tw-shadow-lg'>
       <Text text='Logo' />
-      {isFetched && renderUserStatus}
+      {data && renderUserStatus}
     </nav>
   )
 }

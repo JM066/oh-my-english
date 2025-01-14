@@ -8,7 +8,7 @@ import {
   doCreateUser,
   getUserStatusUpdate,
 } from '../services/auth'
-import { type AuthLogin, type AuthState, type LoginValues, type SignUpValues } from '../types/Auth'
+import { type AuthLogin, type AuthState, type LoginRequest, type SignUpValues } from '../types/Auth'
 
 const getInitialState = (): AuthState => {
   const initialState: AuthState = {
@@ -16,6 +16,7 @@ const getInitialState = (): AuthState => {
     isLoggedIn: false,
     isRegistered: false,
     isFetched: false,
+    data: {} as AuthLogin,
   }
   const storedUser: AuthLogin | null = getStoredUser()
   if (storedUser) {
@@ -24,7 +25,10 @@ const getInitialState = (): AuthState => {
   }
   return initialState
 }
-export const userLogin = createAsyncThunk<void, LoginValues>('auth/userLogin', doUserLogin)
+export const userLogin = createAsyncThunk<Promise<AuthLogin>, LoginRequest>(
+  'auth/login',
+  doUserLogin,
+)
 export const userStatusUpdate = createAsyncThunk<DocumentData, string>(
   'auth/userStatusUpdate',
   getUserStatusUpdate,
@@ -35,6 +39,7 @@ export const userSignUp = createAsyncThunk<void, SignUpValues>('auth/userSignUp'
 const userLoginBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogin.pending, (state) => {
     state.status = 'pending'
+    state.isLoggedIn = false
   })
   builder.addCase(userLogin.fulfilled, (state) => {
     state.status = 'idle'
@@ -83,6 +88,7 @@ const userSignUpBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
 const userLogoutBuilder = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(userLogout.pending, (state) => {
     state.status = 'pending'
+    state.isLoggedIn = true
   })
   builder.addCase(userLogout.fulfilled, (state) => {
     state.status = 'idle'

@@ -1,12 +1,10 @@
-import { type Timestamp } from 'firebase/firestore'
-
 export interface UserName {
   name: string
 }
 export interface AuthState {
-  status: 'pending' | 'idle'
+  status: 'pending' | 'idle' | 'failed'
   error?: string | null
-  data?: AuthLogin
+  data: AuthLogin
   isLoggedIn: boolean
   isRegistered: boolean
   isFetched: boolean
@@ -16,12 +14,10 @@ export type AuthLogin = {
   userId: string
   email: string
   displayName?: string
-  level: number
-  token: string
-  created_at: Timestamp
+  created_at: Date
 }
 
-export type LoginValues = {
+export type LoginRequest = {
   email: string
   password: string
 }

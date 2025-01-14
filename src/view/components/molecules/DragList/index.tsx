@@ -1,14 +1,14 @@
 import { Item, useListData } from 'react-stately'
 import type { DroppableCollectionReorderEvent, Key } from 'react-aria'
+import { useCallback } from 'react'
 import { type ListItem } from '../../../../types/Listening'
 import DroppableListBox from '../../atoms/DragAndDrop/DroppableListBox'
-import { useCallback } from 'react'
 
 interface Props {
   item: ListItem[]
 }
 
-function List(props: Props) {
+function DragList(props: Props) {
   const { item } = props
 
   const listData = useListData({
@@ -31,19 +31,18 @@ function List(props: Props) {
     },
     [listData],
   )
+
   return (
-    <div className=''>
-      <DroppableListBox<ListItem>
-        selectionManager='single'
-        acceptedDragTypes={['text/plain']}
-        items={listData.items}
-        onReorder={onReorder}
-        removeItem={removeItem}
-      >
-        {(i) => <Item>{i.name}</Item>}
-      </DroppableListBox>
-    </div>
+    <DroppableListBox<ListItem>
+      selectionManager='single'
+      acceptedDragTypes={['text/plain']}
+      items={listData.items}
+      onReorder={onReorder}
+      removeItem={removeItem}
+    >
+      {(provided) => <Item>{provided.name}</Item>}
+    </DroppableListBox>
   )
 }
-List.whyDidYouRender = true
-export default List
+DragList.whyDidYouRender = true
+export default DragList
